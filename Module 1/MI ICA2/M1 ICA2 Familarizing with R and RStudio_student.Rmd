@@ -1,0 +1,382 @@
+---
+title: "Familarizing with R/RStudio"
+author: "<insert group #>"
+date: "Module 1 In-class Assignment 2"
+output: 
+  html_document:
+    toc: true
+    number_sections: false
+    toc_float: true
+    df_print: paged
+---
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, comment = NA)
+```
+
+# About the assignment.
+
+In this assignment you will learn to bring in a dataset using the url. The assignment is in a RMarkdown file and give you a glimpse of working with RMarkdown. We will learn how to work with RMarkdown in details in our subsequent class. The advantage of a Rmarkdown file is that you can put your narrative along with the code and output in the same file. This cannot be done in an .R script without using the `#comment`. For this assignment, in the sections where you will need the R code to produce the required results, the blank R code chunks have been inserted. Write the R code in those sections as you would have done in the R console. Use the green triangle in the top right corner of each chunk to run your code or you can run the code in the console window and insert it in the code chunk thereafter. Once all the codes have been inserted, run the file and knit it thereafter. Please remember to change the author name to your group number at the beginning of the file. The html file is for your reference. The knitted html file should be similar to the one provided in D2L but will have the appropriate group number in the author section.
+
+
+
+# Information on the `WorldBank` dataset.
+
+This database gives information on different demographics for countries in the world.
+
+```{r, echo=FALSE}
+getwd()
+u <- "http://www.finley-lab.com/files/data/WorldBank.csv"
+WorldBank <- read.csv(u, header = TRUE, stringsAsFactors = FALSE)
+head(WorldBank)
+```
+
+**How many variables are there in the dataset?**
+15
+Hint: use `ncol`
+
+```{r, echo=FALSE}
+
+```
+
+**What are the names of the different variables in the dataset?**
+[1] "iso2c"                        "country"                      "year"                        
+ [4] "fertility.rate"               "life.expectancy"              "population"                  
+ [7] "GDP.per.capita.Current.USD"   "X15.to.25.yr.female.literacy" "iso3c"                       
+[10] "region"                       "capital"                      "longitude"                   
+[13] "latitude"                     "income"                       "lending"                     
+>
+**Identify the types of the different variables.**
+Character (chr), Integer (int), Number (num)
+Hint check function `names`, `str`.
+
+
+
+
+
+# what are the types of the different variables?
+
+Character, Number, Integer
+**What is the timeframe of the database?**
+
+Hint can use the min and max function
+
+1960 2014
+
+**What is the dimension of the dataset?**
+Hint use the dim() function.
+rows 11880   columns 15
+
+
+
+
+
+**Extract the information for rows 15 of the database.**
+iso2c country year fertility.rate life.expectancy population
+15    AD Andorra 1989             NA              NA      52449
+   GDP.per.capita.Current.USD X15.to.25.yr.female.literacy iso3c
+15                   15166.91                           NA   AND
+                                      region          capital longitude latitude
+15 Europe & Central Asia (all income levels) Andorra la Vella    1.5218  42.5075
+                 income        lending
+15 High income: nonOECD Not classified
+> 
+```{r}
+
+```
+
+
+**Extract the information for rows 55:65 of the database.**
+iso2c              country year fertility.rate life.expectancy population
+55    AD              Andorra 1993             NA              NA      61003
+56    AE United Arab Emirates 1960          6.928        52.24322      89608
+57    AE United Arab Emirates 1967          6.783        59.34046     167360
+58    AE United Arab Emirates 1968          6.738        60.24405     180762
+59    AE United Arab Emirates 1961          6.910        53.28656      97727
+60    AE United Arab Emirates 1966          6.816        58.39185     156890
+61    AE United Arab Emirates 1971          6.512        62.65495     272211
+62    AE United Arab Emirates 1972          6.402        63.36632     322439
+63    AE United Arab Emirates 1973          6.279        64.04312     382599
+64    AE United Arab Emirates 1974          6.146        64.68890     452848
+65    AE United Arab Emirates 1962          6.893        54.32700     108774
+   GDP.per.capita.Current.USD X15.to.25.yr.female.literacy iso3c
+55                   16508.87                           NA   AND
+56                         NA                           NA   ARE
+57                         NA                           NA   ARE
+58                         NA                           NA   ARE
+59                         NA                           NA   ARE
+60                         NA                           NA   ARE
+61                         NA                           NA   ARE
+62                         NA                           NA   ARE
+63                         NA                           NA   ARE
+64                         NA                           NA   ARE
+65                         NA                           NA   ARE
+                                           region          capital longitude latitude
+55      Europe & Central Asia (all income levels) Andorra la Vella    1.5218  42.5075
+56 Middle East & North Africa (all income levels)        Abu Dhabi   54.3705  24.4764
+57 Middle East & North Africa (all income levels)        Abu Dhabi   54.3705  24.4764
+58 Middle East & North Africa (all income levels)        Abu Dhabi   54.3705  24.4764
+59 Middle East & North Africa (all income levels)        Abu Dhabi   54.3705  24.4764
+60 Middle East & North Africa (all income levels)        Abu Dhabi   54.3705  24.4764
+61 Middle East & North Africa (all income levels)        Abu Dhabi   54.3705  24.4764
+62 Middle East & North Africa (all income levels)        Abu Dhabi   54.3705  24.4764
+63 Middle East & North Africa (all income levels)        Abu Dhabi   54.3705  24.4764
+64 Middle East & North Africa (all income levels)        Abu Dhabi   54.3705  24.4764
+65 Middle East & North Africa (all income levels)        Abu Dhabi   54.3705  24.4764
+                 income        lending
+55 High income: nonOECD Not classified
+56 High income: nonOECD Not classified
+57 High income: nonOECD Not classified
+58 High income: nonOECD Not classified
+59 High income: nonOECD Not classified
+60 High income: nonOECD Not classified
+61 High income: nonOECD Not classified
+62 High income: nonOECD Not classified
+63 High income: nonOECD Not classified
+64 High income: nonOECD Not classified
+65 High income: nonOECD Not classified
+```{r}
+
+```
+
+
+
+## Regions of the World
+
+
+The major demographic areas included in the database:
+Hint try using the `unique`
+
+[1] "Europe & Central Asia (all income levels)"     
+[2] "Middle East & North Africa (all income levels)"
+[3] "South Asia"                                    
+[4] "Latin America & Caribbean (all income levels)" 
+[5] "Sub-Saharan Africa (all income levels)"        
+[6] "East Asia & Pacific (all income levels)"       
+[7] NA                                              
+[8] "North America"
+```{r}
+
+```
+
+Form a data frame using the latitude and longitude for one unique region. Example: Here the latitude and longitude for *North America* is given below:
+
+```{r echo=FALSE}
+latNA<-unique(WorldBank$latitude[WorldBank$region=="North America"])
+longtNA<-unique(WorldBank$longitude[WorldBank$region=="North America"])
+data.frame(latNA, longtNA)
+```
+latNA  longtNA
+1      NA       NA
+2 32.3293 -64.7060
+3 45.4215 -75.6919
+4 38.8895 -77.0320
+
+**Select another region and give the latitude and longitude for that region. Please be sure to mention which region was selected.**
+ latNA longtNA
+1 34.52280 69.1761
+2       NA      NA
+3 23.70550 90.4113
+4 27.57680 89.6177
+5 28.63530 77.2250
+6  6.92148 79.8528
+7  4.17420 73.5109
+8 27.69390 85.3157
+9 30.51670 72.8000
+
+# Visual analysis of fertility and Life-expectancy data comparing two given years.
+
+## Create the plots and give the comparison for years 1960 vs 1975.
+
+#### Plots
+
+**Year 1960**
+
+The first six rows of the dataframe consisting of the fertility and life expectancy from the `WorldBank` data for the year 1960 is given by:
+
+```{r echo=FALSE}
+# fertility and LifeExpectancy for 1960
+fertility_60 <- WorldBank$fertility.rate[WorldBank$year == 1960]
+
+lifeexp_60 <- WorldBank$life.expectancy[WorldBank$year == 1960]
+head(data.frame(fertility_60,lifeexp_60))
+```
+
+  fertility_60 lifeexp_60
+1           NA         NA
+2        6.928   52.24322
+3        7.671   31.58005
+4        4.425   61.78273
+5        6.186   62.25437
+6        4.550   65.86346
+
+In this section we will plot the data for fertility and life expectancy 
+
+The simple plot for fertility vs life expectancy for **1960**.
+
+```{r echo=FALSE}
+#plot
+plot(lifeexp_60, fertility_60)
+```
+
+
+ plot(lifeexp_60, fertility_60)
+
+The enhanced plot of the **1960** data for fertility and life expectancy based on the population size.
+
+```{r echo==FALSE}
+#population and region for 1960
+pop_60 <- WorldBank$population[WorldBank$year == 1960]
+region_60 <- WorldBank$region[WorldBank$year == 1960]
+plot(lifeexp_60, fertility_60, type="n")
+symbols(lifeexp_60, fertility_60, circles =sqrt(pop_60/pi), inches=0.35,fg=1:8, bg=match(region_60, unique(region_60)))
+legend("bottomleft", inset=0.005,
+       unique(region_60), fill=1:8, cex=0.25)
+```
+pop_60 <- WorldBank$population[WorldBank$year == 1960]
+> region_60 <- WorldBank$region[WorldBank$year == 1960]
+> plot(lifeexp_60, fertility_60, type="n")
+> symbols(lifeexp_60, fertility_60, circles =sqrt(pop_60/pi), inches=0.35,fg=1:8, bg=match(region_60, unique(region_60)))
+> legend("bottomleft", inset=0.005,
++        unique(region_60), fill=1:8, cex=0.25)
+
+**In the `plot` function above, What does the `type="n"` signify ?**
+
+Type=n does not allow the graph to produce any lines on the graph. 
+
+**Year 1975**
+
+The first six rows of the dataframe consisting of the fertility and life expectancy from the `WorldBank` data for the year 1975 is given by:
+
+```{r echo=FALSE}
+fertility_75 <- WorldBank$fertility.rate[WorldBank$year == 1975]
+lifeexp_75 <- WorldBank$life.expectancy[WorldBank$year == 1975]
+head(data.frame(fertility_75,lifeexp_75))
+```
+fertility_75 lifeexp_75
+1           NA         NA
+2        6.009   65.30515
+3        7.671   38.97027
+4        2.701   67.13007
+5        4.393   68.74122
+6        2.745   70.53193
+
+The simple plot for fertility vs life expectancy for **1975**.
+
+```{r echo=FALSE}
+plot(lifeexp_75, fertility_75)
+```
+plot(lifeexp_75, fertility_75)
+
+The enhanced plot of the **1975** data for fertility and life expectancy based on the population size.
+
+```{r  echo=FALSE}
+pop_75 <- WorldBank$population[WorldBank$year == 1975]
+region_75 <- WorldBank$region[WorldBank$year == 1975]
+plot(lifeexp_75, fertility_75, type="n")
+symbols(lifeexp_75, fertility_75, circles = sqrt(pop_75/pi), inches=0.35,fg = 1:8,bg=match(region_75, unique(region_75)))
+legend("bottomleft", inset=0.005,
+       unique(region_75), fill=1:8, cex=0.25)
+```
+plot(lifeexp_75, fertility_75)
+> pop_75 <- WorldBank$population[WorldBank$year == 1975]
+> region_75 <- WorldBank$region[WorldBank$year == 1975]
+> plot(lifeexp_75, fertility_75, type="n")
+> symbols(lifeexp_75, fertility_75, circles = sqrt(pop_75/pi), inches=0.35,fg = 1:8,bg=match(region_75, unique(region_75)))
+> legend("bottomleft", inset=0.005,
++        unique(region_75), fill=1:8, cex=0.25)
+
+#### Comparison of fertility and life-expectancy data
+
+**Comment on the trend, shift and visible change in densities based on population (3-4 lines) for the two years (1960 vs 1975).**
+
+The life expectancy was lower in 1960, then in 1975. Then people were having less children in 1975. (This is all inferred due to the fact the units are not listed)
+
+## Create the plots and give the comparison for years 1965 vs 1980.
+*Year 1965*
+fertility_65 lifeexp_65
+1           NA         NA
+2        6.841   57.40571
+3        7.671   34.15368
+4        4.193   63.75607
+5        5.594   65.82739
+6        3.979   67.99154
+> ```plot(lifeexp_65, fertility_65)
+
+pop_65 <- WorldBank$population[WorldBank$year == 1965]
+> region_65 <- WorldBank$region[WorldBank$year == 1965]
+> plot(lifeexp_65, fertility_65, type="n")
+> symbols(lifeexp_65, fertility_65, circles =sqrt(pop_65/pi), inches=0.35,fg=1:8, bg=match(region_65, unique(region_65)))
+> legend("bottomleft", inset=0.005,
++        unique(region_65), fill=1:8, cex=0.25)
+
+*Year 1980*
+  fertility_80 lifeexp_80
+1           NA         NA
+2        5.423   67.98320
+3        7.669   41.23366
+4        2.115   68.59198
+5        3.678   70.23598
+6        2.385   70.68454
+
+plot(lifeexp_80, fertility_80)
+
+pop_80 <- WorldBank$population[WorldBank$year == 1980]
+> region_80 <- WorldBank$region[WorldBank$year == 1980]
+> plot(lifeexp_80, fertility_80, type="n")
+> symbols(lifeexp_80, fertility_80, circles =sqrt(pop_80/pi), inches=0.35,fg=1:8, bg=match(region_80, unique(region_80)))
+> legend("bottomleft", inset=0.005,
++        unique(region_80), fill=1:8, cex=0.25)
+
+As fertility decreases life expectancy increases and this can specially shown in South Asia and East Asia. 
+
+## Create the plots and give the comparison for years 1970 vs 2008.
+
+*Year 1970*
+
+fertility_70 lifeexp_70
+1           NA         NA
+2        6.605   59.34046
+3        7.671   35.17007
+4        3.684   64.48807
+5        5.050   66.28722
+6        3.208   68.83049
+
+plot(lifeexp_70, fertility_70)
+
+ pop_70 <- WorldBank$population[WorldBank$year == 1970]
+> region_70 <- WorldBank$region[WorldBank$year == 1970]
+> plot(lifeexp_70, fertility_70, type="n")
+> symbols(lifeexp_70, fertility_70, circles =sqrt(pop_70/pi), inches=0.35,fg=1:8, bg=match(region_70, unique(region_70)))
+> legend("bottomleft", inset=0.005,
++        unique(region_70), fill=1:8, cex=0.25)
+
+*Year 2008*
+ fertility_08 lifeexp_08
+1        1.250         NA
+2        1.948   76.21476
+3        6.196   58.60710
+4        2.164   74.98688
+5        1.761   76.63232
+6        1.734   73.94388
+
+plot(lifeexp_08, fertility_08)
+
+plot(lifeexp_08, fertility_08)
+> pop_08 <- WorldBank$population[WorldBank$year == 2008]
+> region_08 <- WorldBank$region[WorldBank$year == 2008]
+> plot(lifeexp_08, fertility_08, type="n")
+> symbols(lifeexp_08, fertility_08, circles = sqrt(pop_08/pi), inches=0.08,fg = 1:8,bg=match(region_08, unique(region_08)))
+> legend("bottomleft", inset=0.005,
++        unique(region_08), fill=1:8, cex=0.25)
+
+The fertility rate is highest, where life expectancy is the lowest. But looking from 1970 to 1980, cregions such as South Asia and East Asia move more towards ha higher life expectancy and a lower fertility rate.
+
+# Essential details 
+
+## Deadline and submission
+
+The M1 ICA2 is an in-class **group** assignment. However, each member of the group who worked together in class will submit their in-class assignment at the end of the class time. Submit your work by uploading both your RMD and HTML/PDF files through D2L. Although the expectation is to get it done within the class period, if a group needs a little bit of extra time to finish, they can submit the assignment on or before **11 PM of Sept 8,2021**. Late work after this deadline will not be accepted except under certain extraordinary circumstances.
+
+## Grading
+
+ICAs are graded for participation and completion. Each team member who was present in class and worked on the ICA should submit their files. To grade the ICAs, the instructional team will pick one submission at random from each group. Thus it is important that there is good intra-group communication and teamwork. Each group should ensure that everyone in the team understood, worked through and completed the assignment. 

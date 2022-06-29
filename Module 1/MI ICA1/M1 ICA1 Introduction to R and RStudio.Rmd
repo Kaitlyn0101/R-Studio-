@@ -1,0 +1,285 @@
+---
+title: "Introduction to R/RStudio console"
+author: ""
+date: "Module 1 In-class Assignment 1"
+output: 
+  html_document:
+    toc: true
+    number_sections: true
+    toc_float: true
+    df_print: paged
+    self_contained: no
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, 
+                      message = FALSE, 
+                      warning = FALSE,
+                      comment = NA)
+```
+
+# Introduction
+
+Today you will get introduced to the R/RStudio environment, specifically working in the Console window. The Console window will display executed code output and can also be used for quick code execution. However, any work done in the Console window will be lost once you exit RStudio. As such, copy and paste the answer from the console in the script after each question.
+
+# Console computation
+
+The console can be used as a calculator. 
+
+- addition: `+`
+- subtraction: `-`
+- division: `/`
+- multiplication: `*`
+- modulus: `%%`
+- integer division: `%/%`
+- raise to power: `^`
+
+**Evaluate the following expressions in the Console window**
+
+1. `3 + 4 * 0 - (100 / 3)`
+[1] -30.33333
+2. `(4 + 6) * (2 ^ 6)`
+[1] 640
+3. `1 / 0`
+[1] Inf
+4. `10 ^ 10 ^ 10 ^ 10`
+[1] Inf
+5. `0 / 0`
+[1] NaN
+6. `0.0000003 * 2`
+[1] 6e-07
+
+When you launch R/RStudio numerous functions are immediately available to you. 
+These include many of the mathematical and statistical operations you know.
+
+R function | Purpose
+---------- | ---------
+`abs` | absolute value
+`sin` | sine
+`cos` | cosine
+`tan` | tangent
+`log` | logarithm
+`exp` | exponential
+`mean`| arithmetic mean
+`median`| median
+`sd` | standard deviation
+
+**Evaluate the following expressions in the Console window.**
+
+7. absolute value of 7
+[1] 7
+8. sine of 3.1415
+[1] 9.265359e-05
+9. exponential 1  
+[1] 2.718282
+10.logarithm of 1, 6, 10  
+[1] 0, [1] 1.791759, 2.302585
+What logarithm did you just take? Was it the natural log, base 10, base 2? 
+I took the base 10. 
+
+**Type `?log` in the console.** Another way to access help is to use `?<functionname>`. A question mark that precedes a function's name or built in data object will open the help. (Note: put `?log` in the console window).
+
+**Type the following in the Console window.**
+
+11. `?sd` 
+12. `?mtcars`
+13. `?longley`
+
+**What are `mtcars` and `longley`?**
+Motor Trend Car Road Tests and Longley's Econ Regression Data 
+
+The most important aspects of R's help resource will be the description and examples given. Examples are always at the end of the help reference. 
+**How many examples are given in the help of `sd`?**
+one
+
+14. Run the example provided in the help for `sd` in the console.
+  sd(1:2) ^ 2 [1] 0.5
+**Investigate what the following functions do:**
+
+15. `sqrt`
+function (x)  .Primitive("sqrt")
+16. `round`
+function (x, digits = 0)  .Primitive("round")
+17. `floor`
+function (x)  .Primitive("floor")
+18. `ceiling`
+function (x)  .Primitive("ceiling")
+
+# Longley data
+
+## Examine the data
+
+You just found out about the `longley` dataset. Consider Longley's Economic Regression Data. This data set is built-in to R.
+That means it is available immediately once RStudio is launched.
+Type `longley` in your console to see the entire data set. The same data is given below.
+
+```{r echo=FALSE}
+longley
+```
+
+**Answer the following questions about the `longley` data set.**
+
+1. How many rows and columns does `longley` have?
+7 columns and 16 rows 
+Hint: check the nrow and ncol functions.
+
+2. What is the difference between the first column of years and the column with the label Year?
+
+
+
+3. Type `head(longley)` in the Console window. What does this do? How about `tail(longley)`?
+Head provides the first 6 rows of longley and tail provides the last 6 rows of longley.
+
+## Summary statistics
+
+The data set `longley` is stored in R as a data frame. Each column is a vector of the same variable type. We will learn about these details later.
+For now, to access a specific vector use `longley$variable_name`, where `variable_name` is one of the variables in `longley`. For example,
+
+```{r}
+longley$GNP
+```
+
+```{r}
+longley$Year
+```
+
+give the GNP and Year vectors of data.
+longley$GNP
+[1] 234.289 259.426 258.054 284.599 328.975
+ [6] 346.999 365.385 363.112 397.469 419.180
+[11] 442.769 444.546 482.704 502.601 518.173
+[16] 554.894
+
+longley$Year
+ [1] 1947 1948 1949 1950 1951 1952 1953 1954 1955
+[10] 1956 1957 1958 1959 1960 1961 1962
+
+**In your Console window get the following vectors:**
+Note: You need not include the output for the vectors in the script. Just write down the R code used for 4-6 below.
+
+4. Unemployed
+longley$unemployed
+5. Population
+longley$population
+6. Employed
+longley$employed
+**In your Console window compute the mean, median, and standard deviation for each of the vectors in 4 - 6.** Type in your answers below.
+Tip: You can press the up-arrow on your keyboard to cycle through previous inputs in the Console and use that for calculation.
+
+mean(longley$Unemployed)
+[1] 319.3313
+> median(longley$Unemployed)
+[1] 314.35
+> sd(longley$Unemployed)
+[1] 93.44642
+
+> mean(longley$Population)
+[1] 117.424
+> median(longley$Population)
+[1] 116.8035
+> sd(longley$Population)
+[1] 6.956102
+
+> mean(longley$Employed)
+[1] 65.317
+> median(longley$Employed)
+[1] 65.504
+> sd(longley$Employed)
+[1] 3.511968
+
+**Compute the maximum and minimum for each of the vectors in 4 - 6**.
+
+The `summary` function in R will give you many of these statistics. For example,
+
+```{r}
+summary(longley$GNP)
+```
+gives us the minimum, maximum, mean, and quartiles of the GNP vector of data.
+
+ Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+  234.3   317.9   381.4   387.7   454.1   554.9
+  
+**Use the `summary` function on two variables of your choice in `longley`.**
+
+summary(longley$Unemployed)
+Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+187.0   234.8   314.4   319.3   384.2   480.6 
+
+ summary(longley$Population)
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max.
+  107.6   111.8   116.8   117.4   122.3   130.1 
+**Do you think it makes sense to use the `summary` function on the variable Year in `longley`?**
+No, it it is a non quantitative value
+## Employment investigation
+
+Suppose it is 1962. Two economists are discussing employment. Each makes the following claim.
+
+**Economist A:** Employment has never been higher in the past 15 years, we have seen a gradual increase from 1947 to 1962.
+
+**Economist B:** Employment has been range bound since 1947 and is at its lowest level since 1947.
+
+To make a simple plot use the function `plot`. Let's look at the variable Employed across time.
+
+```{r fig.width=9, fig.height=6}
+plot(x = longley$Year, y = longley$Employed)
+```
+
+**Is this the best way to look at employment over time?**  **Discuss this with those in your team.**  
+
+Yes, because trends are more visual and clear as time progresses. 
+
+**Think of and create a more meaningful representation of employment and try to plot it.**
+
+ plot(x=longley$Year, y=longley$Employed, type="o")
+
+**Which economist is correct?**
+Economist A
+
+The graphic doesn't look as attractive.
+The `plot` function is part of the base R graphics and is used to make simple graphs. However,the features in the `ggplot2` package allows us to make very attractive graphs. 
+We will use the package extensively in the
+future. However, we can tidy the above plot with the following code.
+
+```{r fig.width=9, fig.height=6}
+plot(x = longley$Year, y = longley$Employed, xlab = "Year", ylab = "Employed")
+```
+
+**Tidy up the plot you created by adding labels. Feel free to add colors or**
+**other features.**
+
+plot(x = longley$Year, y = longley$Employed, xlab = "Year", ylab = "Employed", type= "o")
+An example of advanced graphics:
+
+Later we will learn about more advanced graphics, such as the one below. 
+Place your cursor on each point to see that year's GNP.
+
+```{r echo=FALSE}
+library(ggplot2)
+library(rvg)
+library(ggiraph)
+
+longley$tooltip <- paste("GNP: ", longley$GNP, sep = "")
+
+gg_point_1 <- ggplot(longley, 
+                     aes(x = Year, y = Employed, tooltip = tooltip)) + 
+              geom_point_interactive(size = 4, color = "darkblue") + 
+              theme_bw()
+
+ggiraph(ggobj = gg_point_1)
+```
+
+# Essential details 
+
+## Deadline and submission
+
+The M1 ICA1 is an in-class **group** assignment. However, each member of the group who worked together in class will submit their in-class assignment at the end of the class time. Submit your work by uploading both your RMD and HTML files through D2L. Late work will not be accepted except under certain extraordinary circumstances.
+
+## Grading
+
+To grade the ICAs, the instructional team will pick one submission at random from each group. Thus it is important that there is good intra- group communication and teamwork. Each group should ensure that everyone in the team understood, and completed the assignment. 
+
+
+# References
+
+1. J. W. Longley (1967) An appraisal of least-squares programs from the point 
+of view of the user. Journal of the American Statistical Association 62, 819-841.

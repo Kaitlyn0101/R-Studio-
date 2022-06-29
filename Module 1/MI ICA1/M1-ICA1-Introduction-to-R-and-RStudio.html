@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Introduction to R/RStudio console</title>
+
+<script src="M1-ICA1-Introduction-to-R-and-RStudio_files/header-attrs-2.10/header-attrs.js"></script>
+<script src="M1-ICA1-Introduction-to-R-and-RStudio_files/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="M1-ICA1-Introduction-to-R-and-RStudio_files/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="M1-ICA1-Introduction-to-R-and-RStudio_files/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="M1-ICA1-Introduction-to-R-and-RStudio_files/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="M1-ICA1-Introduction-to-R-and-RStudio_files/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="M1-ICA1-Introduction-to-R-and-RStudio_files/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="M1-ICA1-Introduction-to-R-and-RStudio_files/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="M1-ICA1-Introduction-to-R-and-RStudio_files/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="M1-ICA1-Introduction-to-R-and-RStudio_files/navigation-1.1/tabsets.js"></script>
+<link href="M1-ICA1-Introduction-to-R-and-RStudio_files/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="M1-ICA1-Introduction-to-R-and-RStudio_files/highlightjs-9.12.0/highlight.js"></script>
+<link href="M1-ICA1-Introduction-to-R-and-RStudio_files/pagedtable-1.1/css/pagedtable.css" rel="stylesheet" />
+<script src="M1-ICA1-Introduction-to-R-and-RStudio_files/pagedtable-1.1/js/pagedtable.js"></script>
+<script src="M1-ICA1-Introduction-to-R-and-RStudio_files/htmlwidgets-1.5.3/htmlwidgets.js"></script>
+<script src="M1-ICA1-Introduction-to-R-and-RStudio_files/d3-bundle-5.16.0/d3-bundle.min.js"></script>
+<script src="M1-ICA1-Introduction-to-R-and-RStudio_files/d3-lasso-0.0.5/d3-lasso.min.js"></script>
+<script src="M1-ICA1-Introduction-to-R-and-RStudio_files/save-svg-as-png-1.4.17/save-svg-as-png.min.js"></script>
+<link href="M1-ICA1-Introduction-to-R-and-RStudio_files/ggiraphjs-0.4.1/ggiraphjs.min.css" rel="stylesheet" />
+<script src="M1-ICA1-Introduction-to-R-and-RStudio_files/ggiraphjs-0.4.1/ggiraphjs.min.js"></script>
+<script src="M1-ICA1-Introduction-to-R-and-RStudio_files/girafe-binding-0.7.10/girafe.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Introduction to R/RStudio console</h1>
+<h4 class="author"></h4>
+<h4 class="date">Module 1 In-class Assignment 1</h4>
+
+</div>
+
+
+<div id="introduction" class="section level1" number="1">
+<h1 number="1"><span class="header-section-number">1</span> Introduction</h1>
+<p>Today you will get introduced to the R/RStudio environment, specifically working in the Console window. The Console window will display executed code output and can also be used for quick code execution. However, any work done in the Console window will be lost once you exit RStudio. As such, copy and paste the answer from the console in the script after each question.</p>
+</div>
+<div id="console-computation" class="section level1" number="2">
+<h1 number="2"><span class="header-section-number">2</span> Console computation</h1>
+<p>The console can be used as a calculator.</p>
+<ul>
+<li>addition: <code>+</code></li>
+<li>subtraction: <code>-</code></li>
+<li>division: <code>/</code></li>
+<li>multiplication: <code>*</code></li>
+<li>modulus: <code>%%</code></li>
+<li>integer division: <code>%/%</code></li>
+<li>raise to power: <code>^</code></li>
+</ul>
+<p><strong>Evaluate the following expressions in the Console window</strong></p>
+<ol style="list-style-type: decimal">
+<li><code>3 + 4 * 0 - (100 / 3)</code> [1] -30.33333</li>
+<li><code>(4 + 6) * (2 ^ 6)</code> [1] 640</li>
+<li><code>1 / 0</code> [1] Inf</li>
+<li><code>10 ^ 10 ^ 10 ^ 10</code> [1] Inf</li>
+<li><code>0 / 0</code> [1] NaN</li>
+<li><code>0.0000003 * 2</code> [1] 6e-07</li>
+</ol>
+<p>When you launch R/RStudio numerous functions are immediately available to you. These include many of the mathematical and statistical operations you know.</p>
+<table>
+<thead>
+<tr class="header">
+<th>R function</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>abs</code></td>
+<td>absolute value</td>
+</tr>
+<tr class="even">
+<td><code>sin</code></td>
+<td>sine</td>
+</tr>
+<tr class="odd">
+<td><code>cos</code></td>
+<td>cosine</td>
+</tr>
+<tr class="even">
+<td><code>tan</code></td>
+<td>tangent</td>
+</tr>
+<tr class="odd">
+<td><code>log</code></td>
+<td>logarithm</td>
+</tr>
+<tr class="even">
+<td><code>exp</code></td>
+<td>exponential</td>
+</tr>
+<tr class="odd">
+<td><code>mean</code></td>
+<td>arithmetic mean</td>
+</tr>
+<tr class="even">
+<td><code>median</code></td>
+<td>median</td>
+</tr>
+<tr class="odd">
+<td><code>sd</code></td>
+<td>standard deviation</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Evaluate the following expressions in the Console window.</strong></p>
+<ol start="7" style="list-style-type: decimal">
+<li>absolute value of 7 [1] 7</li>
+<li>sine of 3.1415 [1] 9.265359e-05</li>
+<li>exponential 1<br />
+[1] 2.718282 10.logarithm of 1, 6, 10<br />
+[1] 0, [1] 1.791759, 2.302585 What logarithm did you just take? Was it the natural log, base 10, base 2? I took the base 10.</li>
+</ol>
+<p><strong>Type <code>?log</code> in the console.</strong> Another way to access help is to use <code>?&lt;functionname&gt;</code>. A question mark that precedes a function’s name or built in data object will open the help. (Note: put <code>?log</code> in the console window).</p>
+<p><strong>Type the following in the Console window.</strong></p>
+<ol start="11" style="list-style-type: decimal">
+<li><code>?sd</code></li>
+<li><code>?mtcars</code></li>
+<li><code>?longley</code></li>
+</ol>
+<p><strong>What are <code>mtcars</code> and <code>longley</code>?</strong> Motor Trend Car Road Tests and Longley’s Econ Regression Data</p>
+<p>The most important aspects of R’s help resource will be the description and examples given. Examples are always at the end of the help reference. <strong>How many examples are given in the help of <code>sd</code>?</strong> one</p>
+<ol start="14" style="list-style-type: decimal">
+<li><p>Run the example provided in the help for <code>sd</code> in the console. sd(1:2) ^ 2 [1] 0.5 <strong>Investigate what the following functions do:</strong></p></li>
+<li><p><code>sqrt</code> function (x) .Primitive(“sqrt”)</p></li>
+<li><p><code>round</code> function (x, digits = 0) .Primitive(“round”)</p></li>
+<li><p><code>floor</code> function (x) .Primitive(“floor”)</p></li>
+<li><p><code>ceiling</code> function (x) .Primitive(“ceiling”)</p></li>
+</ol>
+</div>
+<div id="longley-data" class="section level1" number="3">
+<h1 number="3"><span class="header-section-number">3</span> Longley data</h1>
+<div id="examine-the-data" class="section level2" number="3.1">
+<h2 number="3.1"><span class="header-section-number">3.1</span> Examine the data</h2>
+<p>You just found out about the <code>longley</code> dataset. Consider Longley’s Economic Regression Data. This data set is built-in to R. That means it is available immediately once RStudio is launched. Type <code>longley</code> in your console to see the entire data set. The same data is given below.</p>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["GNP.deflator"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["GNP"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["Unemployed"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["Armed.Forces"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["Population"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["Year"],"name":[6],"type":["int"],"align":["right"]},{"label":["Employed"],"name":[7],"type":["dbl"],"align":["right"]}],"data":[{"1":"83.0","2":"234.289","3":"235.6","4":"159.0","5":"107.608","6":"1947","7":"60.323","_rn_":"1947"},{"1":"88.5","2":"259.426","3":"232.5","4":"145.6","5":"108.632","6":"1948","7":"61.122","_rn_":"1948"},{"1":"88.2","2":"258.054","3":"368.2","4":"161.6","5":"109.773","6":"1949","7":"60.171","_rn_":"1949"},{"1":"89.5","2":"284.599","3":"335.1","4":"165.0","5":"110.929","6":"1950","7":"61.187","_rn_":"1950"},{"1":"96.2","2":"328.975","3":"209.9","4":"309.9","5":"112.075","6":"1951","7":"63.221","_rn_":"1951"},{"1":"98.1","2":"346.999","3":"193.2","4":"359.4","5":"113.270","6":"1952","7":"63.639","_rn_":"1952"},{"1":"99.0","2":"365.385","3":"187.0","4":"354.7","5":"115.094","6":"1953","7":"64.989","_rn_":"1953"},{"1":"100.0","2":"363.112","3":"357.8","4":"335.0","5":"116.219","6":"1954","7":"63.761","_rn_":"1954"},{"1":"101.2","2":"397.469","3":"290.4","4":"304.8","5":"117.388","6":"1955","7":"66.019","_rn_":"1955"},{"1":"104.6","2":"419.180","3":"282.2","4":"285.7","5":"118.734","6":"1956","7":"67.857","_rn_":"1956"},{"1":"108.4","2":"442.769","3":"293.6","4":"279.8","5":"120.445","6":"1957","7":"68.169","_rn_":"1957"},{"1":"110.8","2":"444.546","3":"468.1","4":"263.7","5":"121.950","6":"1958","7":"66.513","_rn_":"1958"},{"1":"112.6","2":"482.704","3":"381.3","4":"255.2","5":"123.366","6":"1959","7":"68.655","_rn_":"1959"},{"1":"114.2","2":"502.601","3":"393.1","4":"251.4","5":"125.368","6":"1960","7":"69.564","_rn_":"1960"},{"1":"115.7","2":"518.173","3":"480.6","4":"257.2","5":"127.852","6":"1961","7":"69.331","_rn_":"1961"},{"1":"116.9","2":"554.894","3":"400.7","4":"282.7","5":"130.081","6":"1962","7":"70.551","_rn_":"1962"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<p><strong>Answer the following questions about the <code>longley</code> data set.</strong></p>
+<ol style="list-style-type: decimal">
+<li><p>How many rows and columns does <code>longley</code> have? 7 columns and 16 rows Hint: check the nrow and ncol functions.</p></li>
+<li><p>What is the difference between the first column of years and the column with the label Year?</p></li>
+<li><p>Type <code>head(longley)</code> in the Console window. What does this do? How about <code>tail(longley)</code>? Head provides the first 6 rows of longley and tail provides the last 6 rows of longley.</p></li>
+</ol>
+</div>
+<div id="summary-statistics" class="section level2" number="3.2">
+<h2 number="3.2"><span class="header-section-number">3.2</span> Summary statistics</h2>
+<p>The data set <code>longley</code> is stored in R as a data frame. Each column is a vector of the same variable type. We will learn about these details later. For now, to access a specific vector use <code>longley$variable_name</code>, where <code>variable_name</code> is one of the variables in <code>longley</code>. For example,</p>
+<pre class="r"><code>longley$GNP</code></pre>
+<pre><code> [1] 234.289 259.426 258.054 284.599 328.975 346.999 365.385 363.112 397.469
+[10] 419.180 442.769 444.546 482.704 502.601 518.173 554.894</code></pre>
+<pre class="r"><code>longley$Year</code></pre>
+<pre><code> [1] 1947 1948 1949 1950 1951 1952 1953 1954 1955 1956 1957 1958 1959 1960 1961
+[16] 1962</code></pre>
+<p>give the GNP and Year vectors of data. longley$GNP [1] 234.289 259.426 258.054 284.599 328.975 [6] 346.999 365.385 363.112 397.469 419.180 [11] 442.769 444.546 482.704 502.601 518.173 [16] 554.894</p>
+<p>longley$Year [1] 1947 1948 1949 1950 1951 1952 1953 1954 1955 [10] 1956 1957 1958 1959 1960 1961 1962</p>
+<p><strong>In your Console window get the following vectors:</strong> Note: You need not include the output for the vectors in the script. Just write down the R code used for 4-6 below.</p>
+<ol start="4" style="list-style-type: decimal">
+<li>Unemployed longley$unemployed</li>
+<li>Population longley$population</li>
+<li>Employed longley$employed <strong>In your Console window compute the mean, median, and standard deviation for each of the vectors in 4 - 6.</strong> Type in your answers below. Tip: You can press the up-arrow on your keyboard to cycle through previous inputs in the Console and use that for calculation.</li>
+</ol>
+<p>mean(longley<span class="math inline">\(Unemployed) [1] 319.3313 &gt; median(longley\)</span>Unemployed) [1] 314.35 &gt; sd(longley$Unemployed) [1] 93.44642</p>
+<blockquote>
+<p>mean(longley<span class="math inline">\(Population) [1] 117.424 median(longley\)</span>Population) [1] 116.8035 sd(longley$Population) [1] 6.956102</p>
+</blockquote>
+<blockquote>
+<p>mean(longley<span class="math inline">\(Employed) [1] 65.317 median(longley\)</span>Employed) [1] 65.504 sd(longley$Employed) [1] 3.511968</p>
+</blockquote>
+<p><strong>Compute the maximum and minimum for each of the vectors in 4 - 6</strong>.</p>
+<p>The <code>summary</code> function in R will give you many of these statistics. For example,</p>
+<pre class="r"><code>summary(longley$GNP)</code></pre>
+<pre><code>   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+  234.3   317.9   381.4   387.7   454.1   554.9 </code></pre>
+<p>gives us the minimum, maximum, mean, and quartiles of the GNP vector of data.</p>
+<p>Min. 1st Qu. Median Mean 3rd Qu. Max. 234.3 317.9 381.4 387.7 454.1 554.9</p>
+<p><strong>Use the <code>summary</code> function on two variables of your choice in <code>longley</code>.</strong></p>
+<p>summary(longley$Unemployed) Min. 1st Qu. Median Mean 3rd Qu. Max. 187.0 234.8 314.4 319.3 384.2 480.6</p>
+<p>summary(longley$Population) Min. 1st Qu. Median Mean 3rd Qu. Max. 107.6 111.8 116.8 117.4 122.3 130.1 <strong>Do you think it makes sense to use the <code>summary</code> function on the variable Year in <code>longley</code>?</strong> No, it it is a non quantitative value ## Employment investigation</p>
+<p>Suppose it is 1962. Two economists are discussing employment. Each makes the following claim.</p>
+<p><strong>Economist A:</strong> Employment has never been higher in the past 15 years, we have seen a gradual increase from 1947 to 1962.</p>
+<p><strong>Economist B:</strong> Employment has been range bound since 1947 and is at its lowest level since 1947.</p>
+<p>To make a simple plot use the function <code>plot</code>. Let’s look at the variable Employed across time.</p>
+<pre class="r"><code>plot(x = longley$Year, y = longley$Employed)</code></pre>
+<p><img src="M1-ICA1-Introduction-to-R-and-RStudio_files/figure-html/unnamed-chunk-5-1.png" width="864" /></p>
+<p><strong>Is this the best way to look at employment over time?</strong> <strong>Discuss this with those in your team.</strong></p>
+<p>Yes, because trends are more visual and clear as time progresses.</p>
+<p><strong>Think of and create a more meaningful representation of employment and try to plot it.</strong></p>
+<p>plot(x=longley<span class="math inline">\(Year, y=longley\)</span>Employed, type=“o”)</p>
+<p><strong>Which economist is correct?</strong> Economist A</p>
+<p>The graphic doesn’t look as attractive. The <code>plot</code> function is part of the base R graphics and is used to make simple graphs. However,the features in the <code>ggplot2</code> package allows us to make very attractive graphs. We will use the package extensively in the future. However, we can tidy the above plot with the following code.</p>
+<pre class="r"><code>plot(x = longley$Year, y = longley$Employed, xlab = &quot;Year&quot;, ylab = &quot;Employed&quot;)</code></pre>
+<p><img src="M1-ICA1-Introduction-to-R-and-RStudio_files/figure-html/unnamed-chunk-6-1.png" width="864" /></p>
+<p><strong>Tidy up the plot you created by adding labels. Feel free to add colors or</strong> <strong>other features.</strong></p>
+<p>plot(x = longley<span class="math inline">\(Year, y = longley\)</span>Employed, xlab = “Year”, ylab = “Employed”, type= “o”) An example of advanced graphics:</p>
+<p>Later we will learn about more advanced graphics, such as the one below. Place your cursor on each point to see that year’s GNP.</p>
+<div id="htmlwidget-bac5dfd3ecaff01f2b9a" style="width:672px;height:480px;" class="girafe html-widget"></div>
+<script type="application/json" data-for="htmlwidget-bac5dfd3ecaff01f2b9a">{"x":{"html":"<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' id='svg_4974e260-8818-4cb0-bb53-cfc8b7ff1fe8' viewBox='0 0 432.00 360.00'>\n  <g>\n    <defs>\n      <clipPath id='svg_4974e260-8818-4cb0-bb53-cfc8b7ff1fe8_cl_1'>\n        <rect x='0.00' y='0.00' width='432.00' height='360.00'/>\n      <\/clipPath>\n    <\/defs>\n    <rect x='0.00' y='0.00' width='432.00' height='360.00' id='svg_4974e260-8818-4cb0-bb53-cfc8b7ff1fe8_el_1' clip-path='url(#svg_4974e260-8818-4cb0-bb53-cfc8b7ff1fe8_cl_1)' fill='#FFFFFF' fill-opacity='1' stroke='#FFFFFF' stroke-opacity='1' stroke-width='0.75' stroke-linejoin='round' stroke-linecap='round'/>\n    <defs>\n      <clipPath id='svg_4974e260-8818-4cb0-bb53-cfc8b7ff1fe8_cl_2'>\n        <rect x='0.00' y='0.00' width='432.00' height='360.00'/>\n      <\/clipPath>\n    <\/defs>\n    <rect x='0.00' y='0.00' width='432.00' height='360.00' id='svg_4974e260-8818-4cb0-bb53-cfc8b7ff1fe8_el_2' clip-path='url(#svg_4974e260-8818-4cb0-bb53-cfc8b7ff1fe8_cl_2)' fill='#FFFFFF' fill-opacity='1' stroke='#FFFFFF' stroke-opacity='1' stroke-width='1.07' stroke-linejoin='round' stroke-linecap='round'/>\n    <defs>\n      <clipPath id='svg_4974e260-8818-4cb0-bb53-cfc8b7ff1fe8_cl_3'>\n        <rect x='40.60' y='5.48' width='385.92' height='322.79'/>\n      <\/clipPath>\n    <\/defs>\n    <rect x='40.60' y='5.48' width='385.92' height='322.79' id='svg_4974e260-8818-4cb0-bb53-cfc8b7ff1fe8_el_3' clip-path='url(#svg_4974e260-8818-4cb0-bb53-cfc8b7ff1fe8_cl_3)' fill='#FFFFFF' fill-opacity='1' stroke='none'/>\n    <polyline points='40.60,283.09 426.52,283.09' id='svg_4974e260-8818-4cb0-bb53-cfc8b7ff1fe8_el_4' clip-path='url(#svg_4974e260-8818-4cb0-bb53-cfc8b7ff1fe8_cl_3)' fill='none' stroke='#EBEBEB' stroke-opacity='1' stroke-width='0.53' stroke-linejoin='round' stroke-linecap='butt'/>\n    <polyline points='40.60,212.42 426.52,212.42' id='svg_4974e260-8818-4cb0-bb53-cfc8b7ff1fe8_el_5' clip-path='url(#svg_4974e260-8818-4cb0-bb53-cfc8b7ff1fe8_cl_3)' fill='none' stroke='#EBEBEB' stroke-opacity='1' stroke-width='0.53' stroke-linejoin='round' stroke-linecap='butt'/>\n    <polyline points='40.60,141.74 426.52,141.74' id='svg_4974e260-8818-4cb0-bb53-cfc8b7ff1fe8_el_6' clip-path='url(#svg_4974e260-8818-4cb0-bb53-cfc8b7ff1fe8_cl_3)' fill='none' stroke='#EBEBEB' stroke-opacity='1' stroke-width='0.53' stroke-linejoin='round' stroke-linecap='butt'/>\n    <polyline points='40.60,71.07 426.52,71.07' id='svg_4974e260-8818-4cb0-bb53-cfc8b7ff1fe8_el_7' clip-path='url(#svg_4974e260-8818-4cb0-bb53-cfc8b7ff1fe8_cl_3)' fill='none' stroke='#EBEBEB' stroke-opacity='1' stroke-width='0.53' stroke-linejoin='round' stroke-linecap='butt'/>\n    <polyline points='69.84,328.27 69.84,5.48' id='svg_4974e260-8818-4cb0-bb53-cfc8b7ff1fe8_el_8' clip-path='url(#svg_4974e260-8818-4cb0-bb53-cfc8b7ff1fe8_cl_3)' fill='none' stroke='#EBEBEB' stroke-opacity='1' stroke-width='0.53' stroke-linejoin='round' stroke-linecap='butt'/>\n    <polyline points='186.78,328.27 186.78,5.48' id='svg_4974e260-8818-4cb0-bb53-cfc8b7ff1fe8_el_9' clip-path='url(#svg_4974e260-8818-4cb0-bb53-cfc8b7ff1fe8_cl_3)' fill='none' stroke='#EBEBEB' stroke-opacity='1' stroke-width='0.53' stroke-linejoin='round' stroke-linecap='butt'/>\n    <polyline points='303.73,328.27 303.73,5.48' id='svg_4974e260-8818-4cb0-bb53-cfc8b7ff1fe8_el_10' clip-path='url(#svg_4974e260-8818-4cb0-bb53-cfc8b7ff1fe8_cl_3)' fill='none' stroke='#EBEBEB' stroke-opacity='1' stroke-width='0.53' stroke-linejoin='round' stroke-linecap='butt'/>\n    <polyline points='420.67,328.27 420.67,5.48' id='svg_4974e260-8818-4cb0-bb53-cfc8b7ff1fe8_el_11' clip-path='url(#svg_4974e260-8818-4cb0-bb53-cfc8b7ff1fe8_cl_3)' fill='none' stroke='#EBEBEB' stroke-opacity='1' stroke-width='0.53' stroke-linejoin='round' stroke-linecap='butt'/>\n    <polyline points='40.60,318.43 426.52,318.43' id='svg_4974e260-8818-4cb0-bb53-cfc8b7ff1fe8_el_12' clip-path='url(#svg_4974e260-8818-4cb0-bb53-cfc8b7ff1fe8_cl_3)' fill='none' stroke='#EBEBEB' stroke-opacity='1' stroke-width='1.07' stroke-linejoin='round' stroke-linecap='butt'/>\n    <polyline points='40.60,247.75 426.52,247.75' id='svg_4974e260-8818-4cb0-bb53-cfc8b7ff1fe8_el_13' clip-path='url(#svg_4974e260-8818-4cb0-bb53-cfc8b7ff1fe8_cl_3)' fill='none' stroke='#EBEBEB' stroke-opacity='1' stroke-width='1.07' stroke-linejoin='round' stroke-linecap='butt'/>\n    <polyline points='40.60,177.08 426.52,177.08' id='svg_4974e260-8818-4cb0-bb53-cfc8b7ff1fe8_el_14' clip-path='url(#svg_4974e260-8818-4cb0-bb53-cfc8b7ff1fe8_cl_3)' fill='none' stroke='#EBEBEB' stroke-opacity='1' stroke-width='1.07' stroke-linejoin='round' stroke-linecap='butt'/>\n    <polyline points='40.60,106.40 426.52,106.40' id='svg_4974e260-8818-4cb0-bb53-cfc8b7ff1fe8_el_15' clip-path='url(#svg_4974e260-8818-4cb0-bb53-cfc8b7ff1fe8_cl_3)' fill='none' stroke='#EBEBEB' stroke-opacity='1' stroke-width='1.07' stroke-linejoin='round' stroke-linecap='butt'/>\n    <polyline points='40.60,35.73 426.52,35.73' id='svg_4974e260-8818-4cb0-bb53-cfc8b7ff1fe8_el_16' clip-path='url(#svg_4974e260-8818-4cb0-bb53-cfc8b7ff1fe8_cl_3)' fill='none' stroke='#EBEBEB' stroke-opacity='1' stroke-width='1.07' stroke-linejoin='round' stroke-linecap='butt'/>\n    <polyline points='128.31,328.27 128.31,5.48' id='svg_4974e260-8818-4cb0-bb53-cfc8b7ff1fe8_el_17' clip-path='url(#svg_4974e260-8818-4cb0-bb53-cfc8b7ff1fe8_cl_3)' fill='none' stroke='#EBEBEB' stroke-opacity='1' stroke-width='1.07' stroke-linejoin='round' stroke-linecap='butt'/>\n    <polyline points='245.26,328.27 245.26,5.48' id='svg_4974e260-8818-4cb0-bb53-cfc8b7ff1fe8_el_18' clip-path='url(#svg_4974e260-8818-4cb0-bb53-cfc8b7ff1fe8_cl_3)' fill='none' stroke='#EBEBEB' stroke-opacity='1' stroke-width='1.07' stroke-linejoin='round' stroke-linecap='butt'/>\n    <polyline points='362.20,328.27 362.20,5.48' id='svg_4974e260-8818-4cb0-bb53-cfc8b7ff1fe8_el_19' clip-path='url(#svg_4974e260-8818-4cb0-bb53-cfc8b7ff1fe8_cl_3)' fill='none' stroke='#EBEBEB' stroke-opacity='1' stroke-width='1.07' stroke-linejoin='round' stroke-linecap='butt'/>\n    <circle cx='58.15' cy='309.30' r='3.47pt' id='svg_4974e260-8818-4cb0-bb53-cfc8b7ff1fe8_el_20' clip-path='url(#svg_4974e260-8818-4cb0-bb53-cfc8b7ff1fe8_cl_3)' fill='#00008B' fill-opacity='1' stroke='#00008B' stroke-opacity='1' stroke-width='0.71' stroke-linejoin='round' stroke-linecap='round' title='GNP: 234.289'/>\n    <circle cx='81.53' cy='286.71' r='3.47pt' id='svg_4974e260-8818-4cb0-bb53-cfc8b7ff1fe8_el_21' clip-path='url(#svg_4974e260-8818-4cb0-bb53-cfc8b7ff1fe8_cl_3)' fill='#00008B' fill-opacity='1' stroke='#00008B' stroke-opacity='1' stroke-width='0.71' stroke-linejoin='round' stroke-linecap='round' title='GNP: 259.426'/>\n    <circle cx='104.92' cy='313.59' r='3.47pt' id='svg_4974e260-8818-4cb0-bb53-cfc8b7ff1fe8_el_22' clip-path='url(#svg_4974e260-8818-4cb0-bb53-cfc8b7ff1fe8_cl_3)' fill='#00008B' fill-opacity='1' stroke='#00008B' stroke-opacity='1' stroke-width='0.71' stroke-linejoin='round' stroke-linecap='round' title='GNP: 258.054'/>\n    <circle cx='128.31' cy='284.87' r='3.47pt' id='svg_4974e260-8818-4cb0-bb53-cfc8b7ff1fe8_el_23' clip-path='url(#svg_4974e260-8818-4cb0-bb53-cfc8b7ff1fe8_cl_3)' fill='#00008B' fill-opacity='1' stroke='#00008B' stroke-opacity='1' stroke-width='0.71' stroke-linejoin='round' stroke-linecap='round' title='GNP: 284.599'/>\n    <circle cx='151.70' cy='227.37' r='3.47pt' id='svg_4974e260-8818-4cb0-bb53-cfc8b7ff1fe8_el_24' clip-path='url(#svg_4974e260-8818-4cb0-bb53-cfc8b7ff1fe8_cl_3)' fill='#00008B' fill-opacity='1' stroke='#00008B' stroke-opacity='1' stroke-width='0.71' stroke-linejoin='round' stroke-linecap='round' title='GNP: 328.975'/>\n    <circle cx='175.09' cy='215.55' r='3.47pt' id='svg_4974e260-8818-4cb0-bb53-cfc8b7ff1fe8_el_25' clip-path='url(#svg_4974e260-8818-4cb0-bb53-cfc8b7ff1fe8_cl_3)' fill='#00008B' fill-opacity='1' stroke='#00008B' stroke-opacity='1' stroke-width='0.71' stroke-linejoin='round' stroke-linecap='round' title='GNP: 346.999'/>\n    <circle cx='198.48' cy='177.39' r='3.47pt' id='svg_4974e260-8818-4cb0-bb53-cfc8b7ff1fe8_el_26' clip-path='url(#svg_4974e260-8818-4cb0-bb53-cfc8b7ff1fe8_cl_3)' fill='#00008B' fill-opacity='1' stroke='#00008B' stroke-opacity='1' stroke-width='0.71' stroke-linejoin='round' stroke-linecap='round' title='GNP: 365.385'/>\n    <circle cx='221.87' cy='212.10' r='3.47pt' id='svg_4974e260-8818-4cb0-bb53-cfc8b7ff1fe8_el_27' clip-path='url(#svg_4974e260-8818-4cb0-bb53-cfc8b7ff1fe8_cl_3)' fill='#00008B' fill-opacity='1' stroke='#00008B' stroke-opacity='1' stroke-width='0.71' stroke-linejoin='round' stroke-linecap='round' title='GNP: 363.112'/>\n    <circle cx='245.26' cy='148.27' r='3.47pt' id='svg_4974e260-8818-4cb0-bb53-cfc8b7ff1fe8_el_28' clip-path='url(#svg_4974e260-8818-4cb0-bb53-cfc8b7ff1fe8_cl_3)' fill='#00008B' fill-opacity='1' stroke='#00008B' stroke-opacity='1' stroke-width='0.71' stroke-linejoin='round' stroke-linecap='round' title='GNP: 397.469'/>\n    <circle cx='268.65' cy='96.31' r='3.47pt' id='svg_4974e260-8818-4cb0-bb53-cfc8b7ff1fe8_el_29' clip-path='url(#svg_4974e260-8818-4cb0-bb53-cfc8b7ff1fe8_cl_3)' fill='#00008B' fill-opacity='1' stroke='#00008B' stroke-opacity='1' stroke-width='0.71' stroke-linejoin='round' stroke-linecap='round' title='GNP: 419.18'/>\n    <circle cx='292.03' cy='87.49' r='3.47pt' id='svg_4974e260-8818-4cb0-bb53-cfc8b7ff1fe8_el_30' clip-path='url(#svg_4974e260-8818-4cb0-bb53-cfc8b7ff1fe8_cl_3)' fill='#00008B' fill-opacity='1' stroke='#00008B' stroke-opacity='1' stroke-width='0.71' stroke-linejoin='round' stroke-linecap='round' title='GNP: 442.769'/>\n    <circle cx='315.42' cy='134.31' r='3.47pt' id='svg_4974e260-8818-4cb0-bb53-cfc8b7ff1fe8_el_31' clip-path='url(#svg_4974e260-8818-4cb0-bb53-cfc8b7ff1fe8_cl_3)' fill='#00008B' fill-opacity='1' stroke='#00008B' stroke-opacity='1' stroke-width='0.71' stroke-linejoin='round' stroke-linecap='round' title='GNP: 444.546'/>\n    <circle cx='338.81' cy='73.75' r='3.47pt' id='svg_4974e260-8818-4cb0-bb53-cfc8b7ff1fe8_el_32' clip-path='url(#svg_4974e260-8818-4cb0-bb53-cfc8b7ff1fe8_cl_3)' fill='#00008B' fill-opacity='1' stroke='#00008B' stroke-opacity='1' stroke-width='0.71' stroke-linejoin='round' stroke-linecap='round' title='GNP: 482.704'/>\n    <circle cx='362.20' cy='48.05' r='3.47pt' id='svg_4974e260-8818-4cb0-bb53-cfc8b7ff1fe8_el_33' clip-path='url(#svg_4974e260-8818-4cb0-bb53-cfc8b7ff1fe8_cl_3)' fill='#00008B' fill-opacity='1' stroke='#00008B' stroke-opacity='1' stroke-width='0.71' stroke-linejoin='round' stroke-linecap='round' title='GNP: 502.601'/>\n    <circle cx='385.59' cy='54.64' r='3.47pt' id='svg_4974e260-8818-4cb0-bb53-cfc8b7ff1fe8_el_34' clip-path='url(#svg_4974e260-8818-4cb0-bb53-cfc8b7ff1fe8_cl_3)' fill='#00008B' fill-opacity='1' stroke='#00008B' stroke-opacity='1' stroke-width='0.71' stroke-linejoin='round' stroke-linecap='round' title='GNP: 518.173'/>\n    <circle cx='408.98' cy='20.15' r='3.47pt' id='svg_4974e260-8818-4cb0-bb53-cfc8b7ff1fe8_el_35' clip-path='url(#svg_4974e260-8818-4cb0-bb53-cfc8b7ff1fe8_cl_3)' fill='#00008B' fill-opacity='1' stroke='#00008B' stroke-opacity='1' stroke-width='0.71' stroke-linejoin='round' stroke-linecap='round' title='GNP: 554.894'/>\n    <rect x='40.60' y='5.48' width='385.92' height='322.79' id='svg_4974e260-8818-4cb0-bb53-cfc8b7ff1fe8_el_36' clip-path='url(#svg_4974e260-8818-4cb0-bb53-cfc8b7ff1fe8_cl_3)' fill='none' stroke='#333333' stroke-opacity='1' stroke-width='1.07' stroke-linejoin='round' stroke-linecap='round'/>\n    <defs>\n      <clipPath id='svg_4974e260-8818-4cb0-bb53-cfc8b7ff1fe8_cl_4'>\n        <rect x='0.00' y='0.00' width='432.00' height='360.00'/>\n      <\/clipPath>\n    <\/defs>\n    <g clip-path='url(#svg_4974e260-8818-4cb0-bb53-cfc8b7ff1fe8_cl_4)'>\n      <text x='18.54' y='321.58' id='svg_4974e260-8818-4cb0-bb53-cfc8b7ff1fe8_el_37' font-size='6.60pt' fill='#4D4D4D' fill-opacity='1' font-family='Helvetica'>60.0<\/text>\n    <\/g>\n    <g clip-path='url(#svg_4974e260-8818-4cb0-bb53-cfc8b7ff1fe8_cl_4)'>\n      <text x='18.54' y='250.91' id='svg_4974e260-8818-4cb0-bb53-cfc8b7ff1fe8_el_38' font-size='6.60pt' fill='#4D4D4D' fill-opacity='1' font-family='Helvetica'>62.5<\/text>\n    <\/g>\n    <g clip-path='url(#svg_4974e260-8818-4cb0-bb53-cfc8b7ff1fe8_cl_4)'>\n      <text x='18.54' y='180.23' id='svg_4974e260-8818-4cb0-bb53-cfc8b7ff1fe8_el_39' font-size='6.60pt' fill='#4D4D4D' fill-opacity='1' font-family='Helvetica'>65.0<\/text>\n    <\/g>\n    <g clip-path='url(#svg_4974e260-8818-4cb0-bb53-cfc8b7ff1fe8_cl_4)'>\n      <text x='18.54' y='109.56' id='svg_4974e260-8818-4cb0-bb53-cfc8b7ff1fe8_el_40' font-size='6.60pt' fill='#4D4D4D' fill-opacity='1' font-family='Helvetica'>67.5<\/text>\n    <\/g>\n    <g clip-path='url(#svg_4974e260-8818-4cb0-bb53-cfc8b7ff1fe8_cl_4)'>\n      <text x='18.54' y='38.88' id='svg_4974e260-8818-4cb0-bb53-cfc8b7ff1fe8_el_41' font-size='6.60pt' fill='#4D4D4D' fill-opacity='1' font-family='Helvetica'>70.0<\/text>\n    <\/g>\n    <polyline points='37.86,318.43 40.60,318.43' id='svg_4974e260-8818-4cb0-bb53-cfc8b7ff1fe8_el_42' clip-path='url(#svg_4974e260-8818-4cb0-bb53-cfc8b7ff1fe8_cl_4)' fill='none' stroke='#333333' stroke-opacity='1' stroke-width='1.07' stroke-linejoin='round' stroke-linecap='butt'/>\n    <polyline points='37.86,247.75 40.60,247.75' id='svg_4974e260-8818-4cb0-bb53-cfc8b7ff1fe8_el_43' clip-path='url(#svg_4974e260-8818-4cb0-bb53-cfc8b7ff1fe8_cl_4)' fill='none' stroke='#333333' stroke-opacity='1' stroke-width='1.07' stroke-linejoin='round' stroke-linecap='butt'/>\n    <polyline points='37.86,177.08 40.60,177.08' id='svg_4974e260-8818-4cb0-bb53-cfc8b7ff1fe8_el_44' clip-path='url(#svg_4974e260-8818-4cb0-bb53-cfc8b7ff1fe8_cl_4)' fill='none' stroke='#333333' stroke-opacity='1' stroke-width='1.07' stroke-linejoin='round' stroke-linecap='butt'/>\n    <polyline points='37.86,106.40 40.60,106.40' id='svg_4974e260-8818-4cb0-bb53-cfc8b7ff1fe8_el_45' clip-path='url(#svg_4974e260-8818-4cb0-bb53-cfc8b7ff1fe8_cl_4)' fill='none' stroke='#333333' stroke-opacity='1' stroke-width='1.07' stroke-linejoin='round' stroke-linecap='butt'/>\n    <polyline points='37.86,35.73 40.60,35.73' id='svg_4974e260-8818-4cb0-bb53-cfc8b7ff1fe8_el_46' clip-path='url(#svg_4974e260-8818-4cb0-bb53-cfc8b7ff1fe8_cl_4)' fill='none' stroke='#333333' stroke-opacity='1' stroke-width='1.07' stroke-linejoin='round' stroke-linecap='butt'/>\n    <polyline points='128.31,331.01 128.31,328.27' id='svg_4974e260-8818-4cb0-bb53-cfc8b7ff1fe8_el_47' clip-path='url(#svg_4974e260-8818-4cb0-bb53-cfc8b7ff1fe8_cl_4)' fill='none' stroke='#333333' stroke-opacity='1' stroke-width='1.07' stroke-linejoin='round' stroke-linecap='butt'/>\n    <polyline points='245.26,331.01 245.26,328.27' id='svg_4974e260-8818-4cb0-bb53-cfc8b7ff1fe8_el_48' clip-path='url(#svg_4974e260-8818-4cb0-bb53-cfc8b7ff1fe8_cl_4)' fill='none' stroke='#333333' stroke-opacity='1' stroke-width='1.07' stroke-linejoin='round' stroke-linecap='butt'/>\n    <polyline points='362.20,331.01 362.20,328.27' id='svg_4974e260-8818-4cb0-bb53-cfc8b7ff1fe8_el_49' clip-path='url(#svg_4974e260-8818-4cb0-bb53-cfc8b7ff1fe8_cl_4)' fill='none' stroke='#333333' stroke-opacity='1' stroke-width='1.07' stroke-linejoin='round' stroke-linecap='butt'/>\n    <g clip-path='url(#svg_4974e260-8818-4cb0-bb53-cfc8b7ff1fe8_cl_4)'>\n      <text x='118.52' y='339.50' id='svg_4974e260-8818-4cb0-bb53-cfc8b7ff1fe8_el_50' font-size='6.60pt' fill='#4D4D4D' fill-opacity='1' font-family='Helvetica'>1950<\/text>\n    <\/g>\n    <g clip-path='url(#svg_4974e260-8818-4cb0-bb53-cfc8b7ff1fe8_cl_4)'>\n      <text x='235.46' y='339.50' id='svg_4974e260-8818-4cb0-bb53-cfc8b7ff1fe8_el_51' font-size='6.60pt' fill='#4D4D4D' fill-opacity='1' font-family='Helvetica'>1955<\/text>\n    <\/g>\n    <g clip-path='url(#svg_4974e260-8818-4cb0-bb53-cfc8b7ff1fe8_cl_4)'>\n      <text x='352.41' y='339.50' id='svg_4974e260-8818-4cb0-bb53-cfc8b7ff1fe8_el_52' font-size='6.60pt' fill='#4D4D4D' fill-opacity='1' font-family='Helvetica'>1960<\/text>\n    <\/g>\n    <g clip-path='url(#svg_4974e260-8818-4cb0-bb53-cfc8b7ff1fe8_cl_4)'>\n      <text x='221.94' y='352.09' id='svg_4974e260-8818-4cb0-bb53-cfc8b7ff1fe8_el_53' font-size='8.25pt' font-family='Helvetica'>Year<\/text>\n    <\/g>\n    <g clip-path='url(#svg_4974e260-8818-4cb0-bb53-cfc8b7ff1fe8_cl_4)'>\n      <text transform='translate(13.37,191.33) rotate(-90.00)' id='svg_4974e260-8818-4cb0-bb53-cfc8b7ff1fe8_el_54' font-size='8.25pt' font-family='Helvetica'>Employed<\/text>\n    <\/g>\n  <\/g>\n<\/svg>","js":null,"uid":"svg_4974e260-8818-4cb0-bb53-cfc8b7ff1fe8","ratio":1.2,"settings":{"tooltip":{"css":".tooltip_SVGID_ { padding:5px;background:black;color:white;border-radius:2px 2px 2px 2px;text-align:left; ; position:absolute;pointer-events:none;z-index:999;}\n","placement":"doc","offx":10,"offy":0,"use_cursor_pos":true,"opacity":0.9,"usefill":false,"usestroke":false,"delay":{"over":200,"out":500}},"hover":{"css":".hover_SVGID_ { fill:orange;stroke:gray; }","reactive":false},"hoverkey":{"css":".hover_key_SVGID_ { stroke:red; }","reactive":false},"hovertheme":{"css":".hover_theme_SVGID_ { fill:green; }","reactive":false},"hoverinv":{"css":""},"zoom":{"min":1,"max":1},"capture":{"css":".selected_SVGID_ { fill:red;stroke:gray; }","type":"multiple","only_shiny":true,"selected":[]},"capturekey":{"css":".selected_key_SVGID_ { stroke:gray; }","type":"single","only_shiny":true,"selected":[]},"capturetheme":{"css":".selected_theme_SVGID_ { stroke:gray; }","type":"single","only_shiny":true,"selected":[]},"toolbar":{"position":"top","saveaspng":false,"pngname":"diagram"},"sizing":{"rescale":true,"width":0.75}}},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+<div id="essential-details" class="section level1" number="4">
+<h1 number="4"><span class="header-section-number">4</span> Essential details</h1>
+<div id="deadline-and-submission" class="section level2" number="4.1">
+<h2 number="4.1"><span class="header-section-number">4.1</span> Deadline and submission</h2>
+<p>The M1 ICA1 is an in-class <strong>group</strong> assignment. However, each member of the group who worked together in class will submit their in-class assignment at the end of the class time. Submit your work by uploading both your RMD and HTML files through D2L. Late work will not be accepted except under certain extraordinary circumstances.</p>
+</div>
+<div id="grading" class="section level2" number="4.2">
+<h2 number="4.2"><span class="header-section-number">4.2</span> Grading</h2>
+<p>To grade the ICAs, the instructional team will pick one submission at random from each group. Thus it is important that there is good intra- group communication and teamwork. Each group should ensure that everyone in the team understood, and completed the assignment.</p>
+</div>
+</div>
+<div id="references" class="section level1" number="5">
+<h1 number="5"><span class="header-section-number">5</span> References</h1>
+<ol style="list-style-type: decimal">
+<li>J. W. Longley (1967) An appraisal of least-squares programs from the point of view of the user. Journal of the American Statistical Association 62, 819-841.</li>
+</ol>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

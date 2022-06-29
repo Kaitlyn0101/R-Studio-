@@ -1,0 +1,267 @@
+---
+title: "Baseball and R Markdown Introduction"
+author: "<Kaitlyn Watson Group #9>"
+date: "Module 1 In-class Assignment 4"
+output: 
+  pdf_document
+    
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, 
+                      message = FALSE, 
+                      warning = FALSE,
+                      comment = NA)
+```
+
+# Introduction
+Sean Lahman's Baseball Database  contains pitching, hitting, and fielding statistics for Major League Baseball from 1871 through 2019. It includes data from the two current leagues (American and National), the four other "major" leagues (American Association, Union Association, Players League, and Federal League), and the National Association of 1871-1875. The `Lahman` package in R contains a plethora of baseball data. This assignment will use a subset of data from the `Lahman` package to expose you to some basic descriptive statistical functions
+and data subsetting within the R Markdown environment.
+
+A subset of the data is stored in a Rdata file. In order
+to read-in the data correctly, save the Rmd file in a folder with the rest of your course work. Place the file baseball.Rdata in the same folder. Go to
+Session > Set Working Directory > To Source File Location. To load the data run the code below:
+
+```{r loading_data}
+load("baseball.Rdata")
+```
+
+# Lahman data
+
+## Accessing the data
+
+Using the `ls()` function to see the objects loaded from the baseball data set. Function `ls()` lists all the objects in the current R environment.
+
+You may see other objects from previous instances of work in R.
+
+```{r list_objects}
+ls()
+```
+
+To access the content of an object in `R` use the object's name.
+Keep in mind that `R` is case sensitive. Thus, we need to type an object's name
+exactly as it appears.
+
+
+Above we see the object `CarltonFiskBA`. Run the code below to see the contents of
+`CarltonFiskBA`.
+
+```{r}
+CarltonFiskBA
+```
+
+*Baseball abbreviations*
+
+Abbreviation | Meaning
+---------- | ----------
+BA  | Batting Average
+HR  | Home Runs
+RBI | Runs Batted In
+
+*These are some measures of a batter's success.*
+
+## Descriptive statistics
+
+The names of many functions in `R` are self-explanatory. To compute the minimum,
+maximum, and mean for Carlton Fisk's career batting average we can use the
+corresponding functions given below.
+
+```{r}
+min(CarltonFiskBA)
+max(CarltonFiskBA)
+mean(CarltonFiskBA)
+```
+
+To find the year in which Carlton Fisk had his lowest batting average and
+the year in which he had his highest batting average,
+we can make use of the functions `which.min()` and `which.max()`, respectively.
+
+```{r}
+which.min(CarltonFiskBA)
+which.max(CarltonFiskBA)
+```
+
+Let's examine how Carlton Fisk's batting average changed throughout his career. 
+First, we compute year-over-year differences, then view the results. 
+Second, we will look at which year he had the largest increase and which year 
+he had the largest decrease.
+
+```{r}
+# compute differences
+CarltonFiskBA_diffs <- diff(CarltonFiskBA, lag = 1)
+CarltonFiskBA_diffs
+
+# find years
+which.max(CarltonFiskBA_diffs)
+which.min(CarltonFiskBA_diffs)
+```
+
+The `#` symbol was used to add comments. `R` does not execute anything 
+following `#`. Use `#` for code documentation to explain to
+others why you are doing what you are doing with your code.
+Good code documentation is also beneficial for your future self.
+
+## Summary statistics with two variables
+
+Recall that the correlation measures the linear strength between two quantitative variables. Let's look at the correlation between each pair of
+available variables for Jim Rice: batting average, home runs, and RBIs.
+
+```{r}
+cor(CarltonFiskBA, CarltonFiskHR)
+cor(CarltonFiskBA, CarltonFiskRBI)
+cor(CarltonFiskHR, CarltonFiskRBI)
+```
+
+To view a simple plot of Fisk's home runs versus his RBIs we can use the
+`plot()` function.
+
+```{r}
+plot(CarltonFiskHR, CarltonFiskRBI)
+```
+
+
+## Exercises
+
+Answer parts a-i below. Use a separate code chunk for each part that requires 
+code. You will examine data on
+[Ted Williams](https://en.wikipedia.org/wiki/Ted_Williams).
+
+*To remind yourself of the variable names use the function* `ls()`.
+
+a. Use the `length` function to determine how many seasons Ted Williams played.
+```{r}
+length(TedWilliamsBA)
+```
+
+
+b. Which season did Ted Williams have his highest batting average?
+```{r}
+which.max(TedWilliamsBA)
+
+#1953
+```
+
+c. Plot Williams' batting average over time. To put the years on the x-axis,
+   use `names(TedWilliamsBA)`.
+```{r}
+plot(names(TedWilliamsBA), TedWilliamsBA)
+
+```
+
+d. What was Williams' highest batting average?
+
+```{r}
+which.max(TedWilliamsBA)
+
+#12
+```
+
+
+
+e. What was Williams' career mean batting average?
+
+```{r}
+mean(TedWilliamsBA)
+```
+
+
+f. What was the correlation between Williams' home runs and RBIs? 
+   Was it higher than Jim Rice's correlation?
+
+```{r}
+cor(TedWilliamsHR, TedWilliamsRBI)
+cor(JimRiceHR, JimRiceRBI)
+
+#Jim Rice had a higher correlation between homeruns and RBIs than Williams
+```
+
+
+g. What was the largest absolute change in Williams' RBIs year-over-year?
+
+```{r}
+
+TedWilliamsRBI_diffs <- diff(TedWilliamsRBI, lag = 1)
+TedWilliamsRBI_diffs
+
+# 1952 had the largest absolute change dropping from 29 to -123 and then rising to 31 a year later.
+```
+
+h. Why does Ted Williams not have any statistics from 1943 - 1945? Was he hurt?
+
+```{r}
+#Ted Williams was on active duty for the Marine corps during 1943-1945, but he was sent back to play in ab all star team. He was not hurt. 
+```
+
+i. Which of the three players (Fisk, Rice, Williams) was most consistent
+   year-over-year with regards to the batting average metric? How did
+   you define consistency?
+   
+```{r}
+CarltonFiskBA_diffs <- diff(CarltonFiskBA, lag = 1)
+CarltonFiskBA_diffs
+
+TedWilliamsBA_diffs <- diff(TedWilliamsBA, lag = 1)
+TedWilliamsBA_diffs
+
+JimRiceBA_diffs <- diff(JimRiceBA, lag = 1)
+JimRiceBA_diffs
+
+plot(names(CarltonFiskBA_diffs),CarltonFiskBA_diffs)
+plot(names(TedWilliamsBA_diffs), TedWilliamsBA_diffs)
+plot(names(JimRiceBA_diffs),JimRiceBA_diffs)
+
+#Carlton had the most consistency because there is least year-to-year difference between his batting averages 
+
+```
+# R Markdown practice
+
+## Exercises
+
+Create the R Markdown file that produced the HTML file `RMarkdown practice`. All formatting
+should match, but you may replace my name with your group name. Below are some
+helpful hints.
+
+1. YAML header should be
+
+```{r eval=FALSE}
+---
+title: "RMarkdown practice"
+author: " "
+date: "Septmeber 15, 2021"
+output: 
+  html_document:
+    toc: true
+    number_sections: true
+    toc_float: true
+    df_print: paged
+---
+```
+
+2. In the Narration section you will use the `summary()`, `apply` functions. Check the function by using `?funtion_name`. Before using the `apply` function you will need to subset the dataset so that only numerical variables are included.
+
+3. To create the Plot 2 use the below code. You will need to **install the `ggplot2` package** before you can load them with the `library` function.
+
+```{r eval=FALSE}
+library(ggplot2)
+ggplot(iris, aes(Petal.Length, Petal.Width, colour = Species)) +
+    geom_point(aes(size = Sepal.Length), alpha = 0.7) +
+  scale_size(range = c(2, 8))
+
+```
+
+# Essential details 
+
+## Deadline and submission
+
+The M1 ICA4 is an in-class **group** assignment. However, each member of the group who worked together in class will submit their in-class assignment at the end of the class time. Submit your work by uploading both your RMD and HTML/PDF files through D2L. Although the expectation is to get it done within the class period, if a group needs a little bit of extra time to finish, they can submit the assignment on or before **11 PM of Sept 15,2021**. Late work after this deadline will not be accepted except under certain extraordinary circumstances.
+
+## Grading
+
+ICAs are graded for participation and completion. Each team member who was present in class and worked on the ICA should submit their files. To grade the ICAs, the instructional team will pick one submission at random from each group. Thus it is important that there is good intra-group communication and teamwork. Each group should ensure that everyone in the team understood, worked through and completed the assignment. 
+
+
+# References
+
+1. Lahman, S. (2017) Lahman's Baseball Database, 1871-2016, Main page, http://www.seanlahman.com/baseball-archive/statistics/
+
+2. https://en.wikipedia.org/wiki/Ted_Williams
