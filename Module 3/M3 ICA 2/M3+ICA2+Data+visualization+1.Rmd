@@ -1,0 +1,172 @@
+---
+title: "Summarizing Data using visualization"
+author: "Kaitlyn Watson Group 9"
+date: "M3 ICA2"
+output:
+  pdf_document
+   
+    
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, 
+                      message = FALSE, 
+                      warning = FALSE,
+                      comment = NA)
+```
+
+# Introduction
+
+Summarizing data graphically and numerically usually requires substantial thought about the data, its structure, what might be obscured by certain representations, and so on. This assignment presents data where different representations yield dramatically different results.
+
+## Univariate data
+
+We have seen that a box plot, which graphically represents the median, the first and third quartiles, and the overall range of the data, can be an effective graphical summary of a single variable. 
+
+
+First read in a data frame that contains five different univariate data sets. The first line, `options(digits = 3)`, tells R to print three significant digits for numeric values. (The usual default in R is seven.)
+
+```{r}
+options(digits = 3)
+fiveUnivariate <- readRDS(url("https://raw.githubusercontent.com/vfmelfi/STT180SS20/master/fiveUnivariate.rds"))
+str(fiveUnivariate)
+names(fiveUnivariate)
+unique(fiveUnivariate$dataSet)
+```
+
+The data frame `fiveUnivariate` has two columns, called ` `r names(fiveUnivariate)[1]` ` and ` `r names(fiveUnivariate)[2]` `. To, for example, extract the observations from the data set called `normal` and look at the first few entries we would use
+
+```{r}
+head(fiveUnivariate$observation[fiveUnivariate$dataSet == "normal"])
+
+
+```
+
+(@) Using `ggplot` draw side-by-side boxplots of the five data sets in `fiveUnivariate`. 
+
+(@) Based on the boxplots, what would you conclude about the five data sets? Do they seem similar? Different? Explain.
+
+All the data sets are highly similar. Specifically, they are almost exactly the same. There is very minimal data variance.  
+
+(@) Hopefully you answered that the five datasets look similar based on the boxplots. Since any particular graphical or numerical representation of data can hide features, choose a different graphical representation of the data (again producing a separate graphical representation for each of the five data sets). Based on this representation, do your answers to the above question change? Why or why not?
+
+Yes my answers have changed. The violin graph showed variance between all three data sets indicating they are not identical to each other. That was presented in the box plot. 
+
+```{r}
+library(tidyverse)
+```
+
+```{r}
+#Hint: can use geom_histogram or geom_violin
+fiveUnivariate %>% 
+  ggplot(mapping=aes(x=dataSet, y=observation)) + 
+  geom_boxplot(mapping=aes(fill=(fiveUnivariate$dataSet)), position="dodge") 
+
+
+```
+
+```{r}
+fiveUnivariate %>% 
+  ggplot(mapping=aes(x=fiveUnivariate$dataSet, y=fiveUnivariate$observation)) +
+    geom_violin(mapping=aes(fill=fiveUnivariate$dataSet, position="dodge"))
+ 
+
+```
+
+The function `tapply()` provides a way to compute summary statistics (such as the mean, median, standard deviation, etc.) separately for each data set. In its simplest use, the function has the form
+
+```
+tapply(X, INDEX, FUN)
+```
+
+where `X` is a vector of observations, `INDEX` is a list of one or more factors, each having the same length as `X`, and `FUN` is a function to be applied to the values in `X`, separately for each of the values of `INDEX`. It's easiest to understand via an example. Here the standard deviation of each of the five data sets is computed.
+
+```{r tapply example}
+tapply(fiveUnivariate$observation, fiveUnivariate$dataSet, sd)
+with(fiveUnivariate, tapply(observation, dataSet, sd))
+```
+
+In the second line of code, the `with()` function was used. Sometimes the "dollar-sign" notation for extracting a column of a data frame makes code messy, and the `with()` function can clean up the code. Either of the two lines of code seems fine in this case.
+
+(@) Use `tapply` with the `summary()` function in place of `FUN` to compute the summary of each of the five data sets. How does the summary add to the information contained in the boxplots?
+
+The summary function allows us to see each quartile range for the data sets along with the maximum and minimum values for each data set. Additionally, it provides actual evidence of variance which cannot be seen in the original boxplot. 
+```{r}
+tapply(fiveUnivariate$observation, fiveUnivariate$dataSet, summary)
+
+with(fiveUnivariate, tapply(observation, dataSet, summary))
+```
+
+## Bivariate data
+
+Next we consider data sets with two variables. For such data sets it is common to calculate the mean and standard deviation of each varaible, and also to compute the correlation coefficient between the two variables. (The correlation coefficient measures the strength and direction of the linear relationship between two variables, with values between -1 and 1. Points with a correlation coefficient of 1 all lie on a line with positive slope. Points with a correlation coefficient of -1 all lie on a line with negative slope.)
+
+First, read in the data.
+```{r}
+fourBivariate <- readRDS(url("https://raw.githubusercontent.com/vfmelfi/STT180SS20/master/fourBivariate.rds"))
+str(fourBivariate)
+unique(fourBivariate$dataSet)
+```
+
+(@) Use `tapply()` to calculate the mean of `x` for each of the four data sets. Are the means similar?
+
+Yes, the means for x are identical throughout the data set. 
+```{r}
+print("X Mean")
+with(fourBivariate,(tapply(x, dataSet, mean)))
+print("Y Mean")
+with(fourBivariate,(tapply(y, dataSet, mean)))
+print("X SD")
+with(fourBivariate,(tapply(x, dataSet, sd)))
+print ("Y SD")
+with(fourBivariate,(tapply(y, dataSet, sd)))
+```
+
+(@) Use `tapply()` to calculate the mean of `y` for each of the four data sets. Are the means similar?
+
+
+Yes, the means for y are identical throughout the data set.
+
+(@) Use `tapply()` to calculate the standard deviation of `x` for each of the four data sets. Are the standard deviations similar?
+
+Yes, the standard deviationos for x are identical throughout the data set.
+
+(@) Use `tapply()` to calculate the standard deviation of `x` for each of the four data sets. Are the standard deviations similar?
+
+Yes, the standard deviation for y are identical throughout the data set.
+
+(@) Use the `cor()` function to calculate the correlation coefficient between `x` and `y` for each of the four data sets. In a later class we will learn how to do this in one line of code, but for now, use a separate line of code for each data set. Are the correlation coefficients similar?
+
+```{r}
+print ("correlation of away")
+cor(fourBivariate$x[fourBivariate$dataSet=="away"], fourBivariate$y[fourBivariate$dataSet=="away"])
+print ("correlation of circle")
+cor(fourBivariate$x[fourBivariate$dataSet=="circle"], fourBivariate$y[fourBivariate$dataSet=="circle"])
+print ("correlation of circle")
+cor(fourBivariate$x[fourBivariate$dataSet=="dino"], fourBivariate$y[fourBivariate$dataSet=="dino"])
+print ("correlation of circle")
+cor(fourBivariate$x[fourBivariate$dataSet=="star"], fourBivariate$y[fourBivariate$dataSet=="star"])
+```
+
+Based on the previous questions, you hopefully noticed that, based on the means, standard deviations, and correlation coefficients, the four data sets look quite similar.
+
+(@) Using `ggplot()` draw scatter plots of each of the four data sets, with `y` on the vertical axis and `x` on the horizontal axis. Use faceting to put the four scatter plots in two rows and two columns. 
+
+```{r}
+ggplot(fourBivariate, mapping=aes(x,y))+ 
+  geom_point() +
+  facet_wrap(vars(dataSet), ncol=2)
+   
+```
+
+
+(@) Do the scatter plots change the suggestion from the means, standard deviations, and correlation coefficients that the four data sets are similar? Why or why not?
+
+Yes because even though the standard deviation, correlation coefficients, and means are similar, the meaning of the graph changes. This is because the scatter plots represent images and provide a different meaning rather then just numerical values.
+
+
+## References
+
+1. [A description of the data used in today's ICA](https://www.autodeskresearch.com/publications/samestats)
+
+2. [An R package containing the data used in today's ICA](https://cran.r-project.org/web/packages/datasauRus/index.html)

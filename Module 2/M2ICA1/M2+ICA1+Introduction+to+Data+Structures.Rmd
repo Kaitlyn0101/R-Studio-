@@ -1,0 +1,393 @@
+---
+title: "Sugary Cereal Vectors"
+author: Kaitlyn Watson-Group 9
+date: "M2 ICA1"
+output: 
+  pdf_document
+  
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, 
+                      message = FALSE, 
+                      warning = FALSE,
+                      comment = NA)
+```
+
+# Introduction
+
+In this assignment we will use the cereal dataset. The .Rmd and  .csv file is uploaded in the Module 2 ICA  folder (M2ICA1).First, save the Rmd file in a folder with the rest of your course work. Put the file `cereal.csv` in the same folder. Please check whether the data and .rmd file are saved in the same working directory. Go to Session > Set Working Directory > To Source File Location. Now you may run the
+below code that will load the data.
+
+```{r read data}
+cereal <- read.csv("cereal.csv")
+attach(cereal)
+head(cereal)
+```
+
+The object `cereal` is a data frame with `r dim(cereal)[1]` rows and 
+`r dim(cereal)[2]` columns. The `r dim(cereal)[1]` cereals have information
+recordered about their nutrients on a per serving basis. Information is also
+given about the number cups in one serving. Full details on the variable names
+are given below.
+
+- **name**: name of cereal
+- **mfr**: manufacturer of cereal
+    - A = American Home Food Products;
+    - G = General Mills
+    - K = Kelloggs
+    - N = Nabisco
+    - P = Post
+    - Q = Quaker Oats
+    - R = Ralston Purina
+- **type**: (C) cold, (H) hot
+- **calories**: calories per serving
+- **protein**: grams of protein
+- **fat**: grams of fat
+- **sodium**: milligrams of sodium
+- **fiber**: grams of dietary fiber
+- **carbo**: grams of complex carbohydrates
+- **sugars**: grams of sugars
+- **potass**: milligrams of potassium
+- **vitamins**: vitamins and minerals - 0, 25, or 100, indicating the 
+-typical percentage of FDA recommended
+- **shelf**: display shelf (1, 2, or 3, counting from the floor)
+- **weight**: weight in ounces of one serving
+- **cups**: number of cups in one serving
+- **rating**: a rating of the cereals
+
+The R command `attach(cereal)` allows you to access each vector in the data
+frame by simply typing the variable's name in R (you need not use the format <data.frame>$<variable name>).
+
+
+# Operators
+
+## Assignment operator
+
+Objects and variables are created with the **assignment operator**, 
+`<-` or `=`. Remeber that in RStudio you can use the shortcut `Alt + -` to 
+create the `<-` assignment operator. The shortcut includes convenient spacing
+before and after the assignment operator. While the equal sign will work, it is
+best practice to stick to using `<-`.
+
+Let's look at the assignment operator in action. 
+
+Compute the protein to fat ratio per serving and name the new variable protein.to.fat.Check the first 6 entries of the new variable. Hint: use the **head** function. 
+
+```{r assignment1}
+headc<- head(cereal)
+protein.to.fat <- headc[, 5]/ headc[, 6]
+protein.to.fat
+
+```
+
+Calculate the protein to carbohydrate ratio.
+
+```{r assignment2}
+headc<- head(cereal)
+protein.to.carbohydrate <- headc[, 5]/ headc[, 9 ]
+protein.to.carbohydrate
+
+```
+
+Try to be descriptive and concise with your variable names. For example,
+`protein.to.fat` is better than `ptf`.
+
+## Comparison operators
+
+Comparisons are binary operators; they take two objects and 
+give a boolean (TRUE or FALSE) response.
+  
+Command | Description
+--------|-------------
+`>`  | greater than
+`<`  | less than
+`>=` | greater than or equal to
+`<=` | less than or equal to
+`==` | equal to (recall that `=` is for assignment and not checking equality)
+`!=` | not equal to
+`&`  | and (ex: `(5 > 7) & (6*7 == 42)` will return the value FALSE)
+`|`  | or  (ex: `(5 > 7) | (6*7 == 42)` will return the value TRUE)
+
+## Exercises
+
+1. Give an example using each of the comparison operators.
+
+```{r}
+cereal[, 5] > cereal[, 6]
+cereal [, 5] < cereal [, 6]
+cereal [, 5] >= cereal[, 6]
+cereal [, 5] <= cereal [, 5]
+cereal [, 5] == cereal [, 5]
+cereal [, 5] != cereal [, 5]
+cereal[, 5] > cereal[, 6] & cereal [, 5] >= cereal[, 6]
+cereal[, 5] > cereal[, 6] | cereal [, 5] >= cereal[, 6]
+
+```
+
+2. How many cereals have more than 100 calories per serving?
+
+```{r}
+cereal [, 4] >100 
+ # 47 cereals have more than 100 calories
+
+```
+
+3. How many cereals have 0 grams of sugar per serving?
+
+```{r}
+cereal [, 10]==0
+
+# 7 cereals have 0 grams of sugar
+```
+
+
+## NA, NaN, Inf, etc.
+
+For each of the following expressions, first guess what the output will be 
+when the expression is evaluated in R, then enter the expression in R.
+
+a. 1/0 = INF
+b. 0/0 = INF
+c. 1/0 + 5 = INF
+e. 1/0 - 1/0 = INF
+e. -2^(10000) = INF
+f. exp(Inf)= INF
+g. exp(-Inf)= 0
+h. 0^0= 1
+i. Inf^0= 1
+j. 0^Inf= 0
+k. log(0) = Err
+l. log(-Inf)= Err
+
+```{r}
+1/0 
+0/0
+1/0 + 5
+1/0 - 1/0
+-2^(10000)
+exp(Inf)
+exp(-Inf)
+0^0
+Inf^0
+log(0)
+log(-Inf)
+
+
+```
+
+
+# Floating point arithmetic
+
+R, as does most software, uses floating point arithmetic, which is not the same as the arithmetic we learn, because computers cannot represent all numbers exactly. For example, while testing for equality of numbers,this has an important consequence.
+
+Here are a few examples.
+
+First, would you expect `0.2 == 0.6/3` to return TRUE or FALSE?
+True
+Test it out. 
+```{r floating point}
+0.2 == 0.6/3
+```
+
+Explain why you are getting the answer that you are getting.
+
+
+```{r}
+#There is not enough accuracy in the precision presented in the answer above and therefore it cannot consider the function to be TRUE.
+```
+
+Next consider the vector `point3` created below.
+
+```{r}
+point3 = c(0.3, 0.4 - 0.1, 0.5 - 0.2, 0.6 - 0.3, 0.7 - 0.4)
+point3
+```
+
+# Vectors
+
+## Vector creation
+
+The function `c` combines its arguments to form a vector. All arguments are
+coerced to a common type which is the type of the returned value, and all
+attributes except names are removed.
+
+Create a vector of school names `MSU, UM, OSU, PSU` and numbers `50085, 43625, 58322, 45518`.
+
+```{r vector creation}
+c("MSU", "UM", "OSU", "PSU", 50085, 43625, 58322, 45518)
+```
+
+## Vector subsetting
+
+Vectors can be subset by position or name (when applicable). For example,
+consider the vector `x`, where
+
+```{r vector subset}
+x <- letters[1:10]
+x
+x[5]
+x[c(1, 5, 9)]
+x[-c(4, 6, 10)]
+x[11]
+```
+
+As another example,
+
+```{r vector subset2}
+grades <- c(99, 85, 89, 92)
+names(grades) <- c("STT", "CMSE", "MTH", "STT")
+grades
+
+grades["STT"]
+grades["CMSE"]
+
+grades[4] <- 82
+grades[4]
+```
+
+## Some built-in functions that work on vectors
+
+Assume that `vec` is a vector of appropriate variable type.
+
+Command | Description
+--------|------------
+`sum(vec)` | sums up all the elements of `vec`
+`mean(vec)` | mean of `vec`
+`median(vec)` | median of `vec`
+`min(vec), max(vec)` | the smallest or largest element of `vec`
+`sd(vec), var(vec)` | the standard deviation and variance of `vec`
+`length(vec)` | the number of components in `vec`
+`sort(vec)` | returns the `vec` in ascending or descending order
+`order(vec)` | returns the index that sorts `vec`
+`unique(vec)` | lists the unique elements of `vec`
+`summary(vec)` | computes the five-number summary
+
+## Exercises
+
+a. Let stat.grade be vector with elements (78,87,65,98,95,99,70,85,75, 80). Input the vector and give the results for the above mentioned commands.
+
+```{r}
+stat.grade <- c(78,87,65,98,95,99,70,85,75, 80)
+sum(stat.grade)
+mean(stat.grade)
+median(stat.grade)
+min(stat.grade)
+max(stat.grade)
+sd(stat.grade)
+var(stat.grade)
+length(stat.grade)
+sort(stat.grade)
+order(stat.grade)
+unique(stat.grade)
+summary(stat.grade)
+
+```
+
+
+b. Comment on what is the difference between the sort and order outputs.
+
+Sort represents the order placement of the original value from least to greatest. Order shows the original value positions
+
+c. Below is a helpful example on subsetting a vector with a logical vector.
+
+```{r logical subsetting example}
+x <- c(1, 4, -5, sqrt(3), exp(2))
+y <- c(T, F, T, T, F)
+x[y]
+```
+
+Comment (1-2 sentences) on what `x[y]`did?
+
+X[y] pulled out only the true values of the vector x. 
+
+d. Now going back to the `cereal` dataset.Use the dataset to answer the questions that follow. You may find some of the above functions helpful. Use a single code chunk to answer each question.
+
+1. How many cereals are in the data set `cereal`?
+
+```{r}
+nrow(cereal)
+
+```
+2. What is the average number of grams of sugar per serving among all cereals?
+```{r}
+mean(cereal[,10])
+```
+
+3. What are the three largest grams of sugar per serving values?
+```{r}
+sort (cereal[, 10]) #14, 15, 15 are the largest values grams per sugar. 
+```
+
+
+4. What are the five smallest grams of sugar per serving values?
+```{r}
+sort (cereal[, 10])  #-1, 0, 0, 0, 0 are the smallest grams of sugar per serving (Note: -1 grams of sugar does not make sense as a value)
+```
+
+5. Which four cereals have the most grams of sugar per serving?
+```{r}
+order(cereal[, 10])
+cereal [58, 1]
+cereal [4, 1]
+cereal [21, 1]
+cereal [55, 1]
+
+#  Quakes, All Bran, Cream of Wheat (Quick), Puffed
+```
+
+6. How many cereals have more than 4 grams of protein per serving and less than 3 grams of sugar per serving?
+
+```{r}
+cereal$protein>4&cereal$sugars<3
+
+# 2 Cereals have more than 4 grams of protein and less than 3 grams of sugar
+```
+
+   
+**Where can I find the sugary cereals?**   
+   
+7. What is the mean amount of grams of sugar per serving for cereals on shelf 1, 2, and 3, respectively?
+```{r}
+mean(cereal$sugars)
+
+```
+
+
+8. Plot (using the plot()) the relationship between shelf and grams of sugar per serving.
+```{r}
+plot(cereal$shelf, cereal$sugars)
+```
+
+
+*Comparison box plots would be better.*
+
+```{r boxplot}
+
+boxplot(sugars ~ shelf, xlab = "Shelf", ylab = "Sugar per serving (grams)")
+```
+
+Comment on which plot is giving more information. Justify your answer in 2-3 sentences.
+
+I would say a box plot provides more information as it shows the more visualization and a clearer distinction between the 3 shelves. It also provides more information in regards to the mean. 
+
+9. Do you see any issue with analyzing and comparing the data on a per serving basis? Think of and propose a better way given the available data.(Hint: Think of how can the data be normalized/ standardized.) 
+
+Each cereal has a different serving size based on variables listed above which therefore could result in inaccurate data. Therefore, by using regression, we could normalize the data. 
+
+```{r}
+boxplot(sugars ~ shelf, xlab = "Shelf", ylab = "Sugar per serving (grams)")
+abline(lm(y ~ x, cereal=cereal$shelf))
+```
+
+
+10. Redo the above boxplot using your new normalized metric from 9.
+
+**Do these results align with your expectations as to where you would find**
+**the sugary cereals?**
+
+I am not sure as I created a regression line, but it does properlu fit where the data is. 
+
+# References
+
+1. https://perso.telecom-paristech.fr/eagan/class/igr204/datasets

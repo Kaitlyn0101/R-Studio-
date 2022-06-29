@@ -1,0 +1,293 @@
+---
+title: "Working with Data Structures"
+author: "Kaitlyn Watson-Group 9"
+date: "M2 ICA2"
+output: 
+  pdf_document
+    
+---
+
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, 
+                      message = FALSE, 
+                      warning = FALSE,
+                      comment = NA)
+```
+
+# Introduction
+
+Today we will investigate a data set from (http://www.gapminder.org), a site which contains a wealth of data and visualizations related to health, wealth, population, etc. of countries of the world. Typical datasets from (http://www.gapminder.org) are somewhat messy, with a lot of missing observations, so today we will work with data extracted from the more complete data sets by Jenny Bryan at UBC. First we load the data into R.This dataset can be extracted from the "gapminder" package in CRAN. As such initially we need to install and call the package. This dataset can aslo be as a .RData file in the same working directory as the .Rmd file and can be called from there.
+
+```{r, cache = TRUE}
+#install.packages("gapminder")
+library("gapminder")
+gapminder <- system.file("extdata", "gapminder.tsv", package = "gapminder")
+gapminder <- read.delim(gapminder)
+ls(gapminder)
+head(gapminder)
+```
+
+Function `ls` returns a vector of character strings giving the names of 
+the objects in the specified environment.
+
+# Dataframe
+
+The `str` function reports on the structure of an object in R. It's often useful to use `str`
+when working with a new dataset. 
+
+* If the data is large, never display the whole data in the .Rmd file. It will takes a long time
+* to generate the html output.
+
+
+```{r}
+str(gapminder)
+```
+
+We see that the `gapminder` data frame has six variables, including `country` (a factor),
+`year` (an integer), `pop` (numeric), `continent` (a factor), `lifeExp` (numeric), and `gdpPercap` (numeric). 
+
+How would you extract the third row of the data frame?
+
+```{r}
+#Extract the third row here
+gapminder [3, ]
+```
+
+How would you extract the first 50 elements of the variable `year`?
+
+```{r}
+#Extract the first 50 elements of the variable year here
+gapminder[1:50, 3 ]
+```
+
+There are a lot of repeated values in `year`. The `unique` function reports on the 
+unique values in a variable. 
+
+```{r}
+#Display the unique values in the variable year here
+unique(gapminder$year)
+```
+
+Next we will work with two particular years, 1952 and 2002, from the dataset. We will use the `subset` function 
+to extract data frames containing data from these two years. Here is how to extract the data for 1952:
+
+```{r}
+gapminder1952 <- subset(gapminder, year == 1952)
+str(gapminder1952)
+```
+
+Note that to specify that a variable is equal to a particular value, we use `==`. 
+Next extract the data for 2002, and assign the resulting data frame to an object named `gapminder2002`.
+
+```{r}
+#Create the data frame here
+gapminder2002 <- subset(gapminder, year == 2002)
+str(gapminder2002)
+```
+
+5. Create comparison boxplots for between continent and life expectancy 
+for year 2002.
+An example from the 1952 data is given below.
+
+```{r echo=FALSE}
+boxplot(lifeExp ~ continent, data = gapminder1952)
+```
+
+**Draw similar boxplots for 2002.**
+
+```{r}
+#Draw the boxplots here
+boxplot(lifeExp ~ continent, data = gapminder2002)
+```
+
+6. From the boxplots for 2002, what do you notice? Which continent has the largest median life expectancy? Which continent has the largest inter-quartile range with regards to life expectancy?
+
+Africa has the lowest life expectancy range in comparison to the rest of the continents. Oceana has the largest median life expectancy. Africa has the largest inter quartile range with regards to life expectancy. 
+
+7. Compute a few summary statistics for life expectancy and GDP in 1952. 
+   Compare these with the same statistics from 2002. Should we compare raw GDP
+   numbers across time such as this?
+
+No, because inflation is not accounted for in raw GDP and therefore, the numbers would be skewed. When compared GDP have larger average life expectancy and GDP in 2002 than in 1952. 
+```{r}
+summary(gapminder1952$lifeExp)
+summary(gapminder1952$gdpPercap)
+```
+
+```{r}
+summary (gapminder2002$lifeExp)
+summary (gapminder2002$gdpPercap)
+```
+
+8. Choose a country of interest. Create a data frame which only contains data 
+   from that country. Draw scatter plots of life expectancy, and of the 
+   GDP, both versus the year. To add some customization such as color,
+   connecting the points, and changing the point style see
+   https://www.statmethods.net/advgraphs/parameters.html.
+```{r}
+gapminderNiger <-subset(gapminder, country == "Niger")
+gapminderNiger
+
+```
+```{r}
+plot(gapminderNiger$year, gapminderNiger$lifeExp,pch=2,col="green", xlab = "year", ylab="lifeexp")
+```
+```{r}
+plot(gapminderNiger$year, gapminderNiger$gdpPercap, pch=7,col="blue",xlab = "year", ylab="gdp Per cap")
+```
+   
+   
+9. Next calculate the median life expectancy, for both 1952 and 2002. 
+
+```{r}
+#Calculate the median life expectancies here
+
+gapminderNiger1952 <- subset(gapminderNiger, year == 1952)
+str(gapminderNiger1952)
+gapminderNiger2002 <- subset(gapminderNiger, year == 2002)
+str(gapminderNiger2002)
+
+median(gapminderNiger1952$lifeExp)
+median(gapminderNiger2002$lifeExp)
+```
+
+What do you notice?
+The median is the same value as the single observation for Nigeria for those years. The life expectancy had increased from 1952-2002.
+10. Next calculate the mean and median GDP for both years. 
+```{r}
+#Calculate the mean and median GDPs here.
+
+mean(gapminderNiger1952$gdpPercap)
+median(gapminderNiger1952$gdpPercap)
+mean(gapminderNiger2002$gdpPercap)
+median(gapminderNiger2002$gdpPercap)
+```
+
+Again, what do you notice?
+
+The mean and median were the same for each year due to limited data, however the GDP increased from 1952 to 2002. 
+
+Choose a country of interest. Create a data frame which only contains data from that country,
+and then draw scatter plots of the life expectancy, and of the GDP, both versus the year.
+
+
+```{r}
+#Create the data frame and draw the scatter plots here.
+gapminderUK <-subset(gapminder, country == "United Kingdom")
+gapminderUK
+```
+
+```{r}
+plot(gapminderUK$year, gapminderUK$lifeExp,pch=2,col="green", xlab = "year", ylab="lifeexp")
+
+```
+
+```{r}
+plot(gapminderUK$year, gapminderUK$gdpPercap,pch=6,col="red", xlab = "year", ylab="gdp Per Cap")
+```
+
+# Logical subsetting
+
+Subsetting with logical vectors is an essential skill. When a vector, say x, is
+subset with a logical vector, the components of x are returned wherever a 
+TRUE value component exists in the logical vector. Below are some
+examples. Think about what is happening in each example. Recall that we can 
+combine conditions with the operators `&` and `|` which represent "and"
+and "or".
+
+```{r}
+mean(gapminder$pop[gapminder$country == "France"])
+unique(gapminder$country[gapminder$continent == "Africa"])
+gapminder$country[(gapminder$pop > 150000000) & (gapminder$year == 1992)]
+```
+
+Operator `%in%` returns a logical vector indicating if there is a match or 
+not for its left operand. Consider the example below
+
+```{r}
+x <- 5:10
+y <- c(3, 5, 6, 9, 12, 15)
+
+x %in% y
+y %in% x
+```
+
+Subsetting also can be used to change values of existing `R` objects 
+as in the following example. Remove the chunk option `eval = FALSE` to
+see the example's result in your knitted HTML file.
+
+```{r}
+dd <-  data.frame(x = c("dog", "cat", "oink", "pig", "oink", "cat", "dog"), 
+                y = c("dog", "cat", "cat", "pig", "cow", "dog", "dog"),
+                stringsAsFactors = FALSE)
+dd
+
+dd$x[dd$x == "oink"] <- "pig"
+dd
+
+dd$same <- rep("no", dim(dd)[1])
+dd
+
+dd$same[dd$x == dd$y] <- "yes"
+dd
+```
+
+## Exercises
+
+
+
+1. Extract the population values of all countries whose 
+   life expectancy is more than 70 years for the year 1967.
+```{r}
+gapminder1967 <-subset(gapminder, year == 1967)
+gapminder1967LE <- subset (gapminder1967, lifeExp >70)
+gapminder1967LE
+
+
+```
+   
+
+2. For the year 2007, how many countries had a life expectancy of at least 75?
+
+```{r}
+gapminder2007 <-subset(gapminder, year == 2007)
+gapminder2007LE <- subset (gapminder2007, lifeExp >= 75)
+gapminder2007LE
+
+
+```
+44 countries have a life expectancy of at least 75. 
+
+3. Add a variable called `G8` to the `gapminder` data frame, which
+   will be equal to 1 or 0 depending on whether the country is in the G8 
+   group of nations: France, Germany, Italy, the United Kingdom, Japan, 
+   the United States, Canada, and Russia.
+```{r}
+gapminder$G8 <- 0
+G8country <- c("France", "Germany", "Italy", "United Kingdom", "Japan", "United States", "Canada")
+gapminder$G8 [gapminder$country %in% G8country] <- 1
+unique(gapminder$country [gapminder$G8 ==1])
+
+```
+
+   
+4. Create a plot of your choice that involves countries of the G8.
+```{r}
+G8plot <- subset(gapminder, subset= (G8==1))
+G8plot
+
+plot(x=G8plot$year, y=G8plot$lifeExp)
+
+```
+
+# References
+
+1. https://www.gapminder.org/data/
+2. https://www.statmethods.net/advgraphs/parameters.html
+
+
+
+
+

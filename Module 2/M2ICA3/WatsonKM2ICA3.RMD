@@ -1,0 +1,158 @@
+---
+title: "Tidy data"
+author: "Kaitlyn Watson-Group 9"
+date: "Module 2 ICA 3 "
+output: 
+  pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, 
+                      message = FALSE, 
+                      warning = FALSE,
+                      comment = NA)
+```
+
+# Introduction
+
+Messy data is common. A large portion of your time may be spent cleaning,
+parsing, and organizing a data set. Tidy data is the ultimate goal. Four
+functions available in the `tidyr` package will help make this process easier:
+
+- `gather()`
+
+- `spread()`
+
+- `separate()`
+
+- `unite()`
+
+Package `tidyr` is automatically loaded when you load `tidyverse`.
+
+```{r packages, echo=FALSE}
+library(tidyverse)
+```
+
+Open the file `gapminder-raw.csv` to see what it contains and its format.
+Read in `gapminder-raw.csv` to R and save it as an object called `gapminder1`. 
+Check a few of the rows below to make sure your data was read in
+properly.
+
+```{r read-data, echo=FALSE}
+gapminder1<-read.csv("gapminder-raw.csv")
+gapminder1
+```
+**Comment on why the above data frame is not tidy?**
+Column names are unclear and the life expectancy collumn is above the years listed. Each column represents one year. Additionally, there are many areas with N/A present throughout the entire data set. 
+
+# Tidy data { - .tabset .tabset-fade .tabset-pills}
+
+You will now tidy `gapminder1` by using a series of functions in the `tidyr` 
+package.
+
+In each step, examine the resulting data frame, and attempt to produce code that 
+generates the resulting data frame. Carefully examine the variable names, types,
+and first few rows.
+
+## Step 1: Wide to long { - .tabset .tabset-fade .tabset-pills}
+
+
+```{r wide to long, echo=FALSE}
+
+gapminder1<-gather(gapminder1, key=year, value=life.exp, -Life.expectancy)
+gapminder1
+```
+Years are now represented in the rows rather than in the columns. And life expectancy has the correct values in the designated column.  
+### Hints
+
+- Function `gather()` takes multiple columns and collapses into key-value pairs, 
+  duplicating all other columns as needed. You use `gather()` when you 
+  notice that you have columns that are not variables.
+  
+- Function `gather()` will transform a data frame from wide to long format.
+
+- You want to gather all but the first column of `gapminder1`.
+
+- Run each line of the code below in your console for a small example.
+
+
+
+## Stpe 2: Variable names { - .tabset .tabset-fade .tabset-pills}
+
+
+```{r add variable names}
+names(gapminder1)[1]<-"country"
+gapminder1
+```
+
+
+## Step 3: Fixing the years { - .tabset .tabset-fade .tabset-pills}
+
+
+```{r tidying the data, echo=FALSE}
+gapminder1<-separate(gapminder1, "year", into=c("X", "year"), "X")
+gapminder1<-gapminder1[ -c(2) ] 
+gapminder1$year<-as.integer(gapminder1$year)
+gapminder1
+```
+
+
+# Visualizations using base R functions { - .tabset .tabset-fade .tabset-pills}
+
+Recreate plots 1 and 2. Try to create the plot without looking at the hints, and **comment on any interesting trends/relationships you observe**.
+
+## Plot 1 { - .tabset .tabset-fade .tabset-pills}
+
+### Plot {-}
+
+```{r plot1, echo=FALSE, cache=TRUE}
+US<-subset(gapminder1,gapminder1$country=="United States")
+
+plot(US$year, US$life.exp, type = "l", lwd=3, Main="US Mean Life Expectancy Increase", sub="Large drops during the Civil War and WW1", col="red") 
+abline(v=1863)
+abline(v=1918)
+```
+
+### Hints {-}
+
+- Use `subset()` to filter `gapminder` for United States
+
+- `plot(x = year, y = life.exp, type="l",...)`
+
+- Use `lwd`, `main`,`sub`,`xlab` and `ylab` in the `plot()`
+
+- `abline(v=1863)`
+
+## Plot 2 { - .tabset .tabset-fade .tabset-pills}
+
+### Plot 
+
+```{r plot2, echo=FALSE, cache=TRUE}
+Countries <- c(gapminder1, gapminder1$country == "China", "India", "Indonesia", "United States", "Brazil")
+
+plot(gapminder1$year[gapminder1$country == "China"],gapminder1$life.exp[gapminder1$country == "China"], type = "l", xlab = "Year", ylab = "Life Expectancy", lwd = 2, ylim = c(0,90))
+lines(gapminder1$year[gapminder1$country=="India"], gapminder1$life.exp[gapminder1$country=="India"], type = "l", col = "blue", lwd=2)
+lines(gapminder1$year[gapminder1$country=="Indonesia"], gapminder1$life.exp[gapminder1$country=="Indonesia"], type = "l", col = "red", lwd=2)
+lines(gapminder1$year[gapminder1$country=="United States"], gapminder1$life.exp[gapminder1$country=="United States"], type = "l", col = "pink", lwd=2)
+lines(gapminder1$year[gapminder1$country=="Brazil"], gapminder1$life.exp[gapminder1$country=="Brazil"], type = "l", col = "orange", lwd=2)
+
+legend("topleft", legend = c("China", "India", "Indonesia", "US", "Brazil"), col = c("black", "blue", "red", "pink", "orange"), lty = 1, cex = 0.5)
+```
+The United States has a considerably higher life expectancy as the years progress; however, the common trend between all countries is increasing. 
+### Hints 
+
+- Use `subset()` to filter `gapminder` for 
+  `c("China", "India", "Indonesia", "United States", "Brazil")`
+  
+- `plot(year[country=="China"], life.exp[country=="China"],...)` for "China".
+
+- Use `lines(year[country=="India"], life.exp[country=="India"], type = "l", col = "red", lwd=2)` for each additional country.
+
+- legend("topleft", legend = c("China", "India", "Indonesia", "US", "Brazil"), col = c("black", "red", "green","orange","purple"),
+       lty = 1, cex = 0.5)
+
+
+
+# References
+
+1. https://www.gapminder.org/

@@ -1,0 +1,257 @@
+---
+title: "Diamonds are forever"
+author: "Kaitlyn Watson-Group 9"
+date: "M3 ICA1"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, 
+                      message = FALSE, 
+                      warning = FALSE,
+                      comment = NA)
+```
+
+# The data
+
+
+Package `tidyverse` is a set of packages that work in harmony. We will use
+the `ggplot2` package to produce our data visualizations. This package is part
+of the `tidyverse` package. As we move forward, we will utilize some of the
+other packages loaded via `tidyverse`.
+
+
+```{r packages}
+library(tidyverse)
+```
+
+The ggplot2 package comes with a data set called `diamonds`. 
+Let's look at it below. 
+To obtain further details type `?diamonds` in your console window.
+
+```{r}
+glimpse(diamonds)
+```
+
+**Variable codebook**
+
+The dataset containing the prices and attributes of nearly 54,000 diamonds includes
+the following variables:
+
+    *price*
+    price in US dollars (\$326--\$18,823)
+    
+    *carat*
+    weight of the diamond (0.2--5.01)
+    
+    *cut*
+    quality of the cut (Fair, Good, Very Good, Premium, Ideal)
+    
+    *color*
+    diamond colour, from D (best) to J (worst)
+    
+    *clarity*
+    a measurement of how clear the diamond is (I1 (worst), SI2, SI1, VS2, VS1, VVS2, VVS1, IF (best))
+    
+    *x*
+    length in mm (0--10.74)
+    
+    *y*
+    width in mm (0--58.9)
+    
+    *z*
+    depth in mm (0--31.8)
+    
+    *depth*
+    total depth percentage = z / mean(x, y) = 2 * z / (x + y) (43--79)
+    
+    *table*
+    width of top of diamond relative to widest point (43--95)
+    
+# The investigation
+
+**What influences the price of a diamond?**
+Carat Weight, Color, Clarity, Cut
+
+As a quick primer on diamond pricing, watch the following video on 'the 4C's of Diamonds.'
+https://www.youtube.com/watch?v=dFiG3ckNCIY&feature=emb_logo
+
+# Exploring the data
+
+1. Which of the 4C's do you predict most influences the price of a diamond? The least? 
+Provide a 1-2 sentence explanation of your opinion.
+
+I think that carat weight most influences the price of a diamond. The heavier the diamond weighs, the more value it holds. From my own experience, diamonds that were larger tend to cost much more than diamonds that are smaller. 
+
+I think the cut of the diamond has the least influence because it is a personal preference. It is hard to price something higher for a different shape when it is based on other people's opinions. 
+
+2. The data set `diamonds` is stored in R as a tibble. This allows for a 
+convenient way to view the data frame in the console. Type `diamonds` in your
+console to see.
+
+Let's briefly explore the distribution of some of the variables stored in `diamonds`.
+
+3. a. Variables cut, color, and clarity are all factors. Use the function `levels` to see the levels of each variable. They are sorted from worst to best. Use the `table` command to determine how many cases fall into each level of cut Do the same for color and clarity.
+```{r}
+levels(diamonds$cut)
+levels(diamonds$color)
+levels(diamonds$clarity)
+table(diamonds$cut)
+table(diamonds$color)
+table(diamonds$clarity)
+
+```
+
+
+   b. Because `price` is quantitative, the `table` command won't provide a useful summary of the distribution of observed cases for this variable. Use the `summary` function to get a sense of this variable's distribution.
+   
+```{r}
+summary(diamonds$price)
+```
+   
+   
+   c. Add a new variable to `diamonds` called `price.per.carat` that represents the price per carat. Are all diamonds priced the same per carat? If not, how much do these rates vary?
+   
+```{r}
+diamonds %>% 
+  mutate(price.per.carat=price/carat)
+## The diamonds are not all priced the dame per carat. They vary from greatly from each other. 
+```
+   
+  
+Write 1-2 sentences hypothesizing what might cause a diamond to fetch a higher price per carat than others.
+I believe that cut, color, and clarity also play factors into a diamond having a higher price per carat then others. These are all variables within this data frame. 
+
+In contrast to (3a) and (3b), which ask about the distribution of a single variable, exercise (3c) is the first to begin looking at the *relationship* between two variables - in this case, a diamond's `price` and `carat`.
+
+Let's investigate relationships further. **What is the relationship between a diamond's price and its cut/color?**
+
+4. a. Remember that a diamond's cut can be too shallow
+or too steep, and either will cause it to sparkle less dramatically under bright light.
+
+Summarize and compare the prices of Fair (the worst cut) and Ideal (the best cut) diamonds.
+
+```{r diamond cutcomparison1}
+# use the summary function on price for the particular cuts
+diamonds %>% 
+  filter(cut=="Fair") %>% 
+  summarise(quantile(price))
+
+diamonds %>% 
+  filter(cut=="Ideal") %>% 
+  summarise(quantile(price))
+
+  
+```
+
+How unexpected! Many of the quantile prices for diamonds rated
+Fair exceed those rated Ideal (every value of the five-number summary apart from the max price]. 
+This is probably the exact opposite of what you may have expected.
+
+b. Summarize and compare the prices of D (the best color) diamonds and J (the worst color) diamonds.
+
+```{r diamond colorcomparison}
+#use the summary function on price for the particular colors.
+diamonds %>% 
+  filter(color=="D") %>% 
+  summarise(quantile(price))
+
+diamonds %>% 
+  filter(color=="J") %>% 
+  summarise(quantile(price))
+```
+
+Another unexpected result! The summary statistics show that many poorly colored diamonds fetch higher prices than ideally colored diamonds at the same percentile ranking (i.e., the 75th most expensive perfectly-colored diamond is much cheaper than the 75th most expensive poorly-colored diamond). How can this be?
+
+This could potentially be because there are other factors influencing the diamonds worth such as rarity and uniqueness. 
+
+5. **What influences a diamond's price? ** In 1-2 sentences, hypothesize as to why the distribution of poorly cut diamonds trends more expensive than those that are perfectly cut.
+
+The distribution of poorly cut diamonds trends more expensive then perfectly cut potentially due to the rarity and uniqueness of the poorly cut diamonds. 
+
+# Visualizations with ggplot
+
+Visualizations are an excellent tool for exploring the distributions of variables - their patterns, their variability,
+and how those attributes are related to those of other variables. The exercises below ask you to first recreate a number
+of visualizations we believe will help to answer our initial question **What influences a diamond's price?** along with
+several others along the way.
+
+## Exercises {.tabset .tabset-fade .tabset-pills}
+
+5. The code to create each plot below is given. Try to understand what the associated code is doing. As we start delving into Data Visualization you will gain experience and can recreate these plots on your own.
+
+6. Consider Plot 1. Notice how the distribution of `carat` vs. `price` has clustered vertical lines at 1, 1.5, and 2 carats. It seems suspicious that naturally occurring diamonds would appear at these values more often than others (such as 0.9, 1.4, or 1.95). Provide a plausible explanation for why our data on ~54,000 diamonds might display this pattern.
+
+These diamonds may have been cut down to a size in which they can sell for a relatively high price. They also may have postponed the mining of these diamonds until they were higher in carats. 
+
+7. Consider Plot 2, which displays the relationship between `carat`, `color`, and `price`, and remember that color is coded across letters D to J, from most desirable to least desirable. We earlier discovered that poorly colored diamonds tend to fetch higher prices than ideally colored diamonds. Write 1-2 sentences describing how this plot helps to explain this counter intuitive finding.
+
+There is a stronger relationship between the carat price than color. Therefore, if the carat is larger, the color matters less and the price would still increase. Additionally, many of the carats within the 1 and 2 carat range tend to have less desirable colors, but are also in abundance. 
+
+8. You'll notice Plots 3 and 4 display the relationship between the same four variables, `carat`, `color`, `price`, and `cut`. Which of the two plots is more useful when analyzing which factors play a role in the overall price of a diamond? Justify your opinion in 2-3 sentences.
+
+The second plot is much more readable and easier to understand. It splits up the graphs based off the cut and allows an easier visual to understand how color, price, and carat are influenced by these cuts. Plot 3 is very busy and has too many factors involved in one plot. The data is extremely hard to read. 
+
+9. Finally, consider Plot 5, which considers the final of the '4 C's' of diamond pricing, clarity. You should notice that the clearest of diamonds (rating IF) include many more ideal cuts than the foggiest of diamonds (rating l1). Hypothesize as to why this might be? 
+
+The diamonds that have higher clarity are worth more and are handled more carefully. The price for clarity also increases and by creating an ideal cut, they can be sold for much more. Clearer diamonds with an Ideal Cut are also more desirable overall. 
+<font color="black">
+
+### Plot 1 {-}
+
+</font>
+
+```{r plot1, echo=FALSE, cache=TRUE}
+diamond.plot <- ggplot(data = diamonds, aes(x = carat, y = price))
+diamond.plot + geom_point()
+```
+
+### Plot 2 {-}
+
+```{r plot2, echo=FALSE, cache=TRUE}
+diamond.plot <- ggplot(data = diamonds, aes(x = carat, y = price, color = color))
+
+diamond.plot + geom_point() + 
+  labs(y = "Price ($)", 
+       x = "Carat", title = "Diamond Carat vs Price", 
+       subtitle = "data from ggplot2")
+```
+
+### Plot 3 {-}
+
+```{r plot3, echo=FALSE, cache=TRUE}
+diamond.plot <- ggplot(data=diamonds, 
+                       aes(x = carat, y = price,  shape = cut, colour = color))
+diamond.plot + geom_point()+ 
+  labs(y = "Price ($)", x = "Carat", 
+       title = "Diamond Carat vs Price", subtitle = "data from ggplot2")
+```
+
+### Plot 4 {-}
+
+```{r plot4, echo=FALSE, cache=TRUE}
+diamond.plot <- ggplot(data = diamonds, aes(x = carat, y = price, colour = color))
+
+diamond.plot + geom_point() + facet_wrap(~cut) + 
+  labs(y = "Price ($)", x = "Carat")
+```
+
+### Plot 5 {-}
+
+```{r plot5, echo=FALSE, cache=TRUE}
+diamond.plot <- ggplot(data = diamonds, aes(x = carat, y = price, colour = cut))
+
+diamond.plot + geom_point() + facet_wrap(~clarity, nrow = 2) + 
+  labs(y = "Price ($)", x = "Carat")
+```
+
+# Wrap up
+
+In this in-class activity, we used visualization to investigate the relationships between two or more variables. You likely noticed that apparent relationships between two variables (for instance, that poorer colored diamonds tended to be more expensive) were sometimes influenced by the interaction with a third, unobserved variable. Such unobserved variables are often considered *confounding variables*. 
+
+In this case, a diamond's `carat` (or size) is very strongly associated with its `price`. Additionally, the larger a diamond grows, the more unlikely it is to maintain ideal color or clarity, and the more difficult it is for a jeweler to cut it perfectly. This helps to explain our initial finding that poorly colored or cut diamonds were more expensive - often, they were just bigger. This is one example of the power of data visualization, which helps make intelligible patterns in data that might not otherwise make sense.
+
+# References
+
+1. Grolemund, G., & Wickham, H. (2019). R for Data Science. 
+   https://r4ds.had.co.nz/
