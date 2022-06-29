@@ -1,0 +1,224 @@
+---
+title: "Using joins to create MLB tables"
+author: "Group 9"
+date: "M7 ICA1"
+output: 
+  pdf_document
+    
+---
+
+<style type="text/css">
+/* Title */
+h1.title {
+  color: #000088;
+  font-size:60px;
+  font-weight: bold;
+}
+/* Level 1 header */
+h1 {
+  color: #000088;
+  font-weight: bold;
+}
+/* Level 2 header */
+h2 {
+  color: #CC0000;
+  font-weight: bold;
+}
+/* Level 4 header */
+h4 {
+  color: #000000;
+  font-weight: bold;
+}
+/* Table of contents */
+.list-group-item.active, .list-group-item.active:focus, .list-group-item.active:hover {
+    z-index: 2;
+    color: #fff;
+    background-color: #CC0000;
+    border-color: #337ab7;
+}
+
+</style> 
+
+```{r setup, include=FALSE}
+# global chunk options
+knitr::opts_chunk$set(echo = TRUE,
+                      error = TRUE,
+                      message = FALSE, 
+                      warning = FALSE,
+                      comment = NA,
+                      fig.width=9, 
+                      fig.height=7)
+```
+
+# Introduction
+
+Today you will get practice merging data frames with inner and outer join
+functions available in package `dplyr`. To get started, load packages
+`tidyverse` and `Lahman`.
+
+Package `Lahman` has numerous data frames about Major League Baseball.
+Type `help(package = "Lahman")` in your Console to see everything available.
+
+```{r packages}
+library(tidyverse)
+library(Lahman)
+```
+
+```{r hidden-packages, include=FALSE}
+# library(extrafont)
+# loadfonts(device = "win")
+```
+
+```{r theme-custom, include=FALSE}
+theme_custom <- function() {
+   theme_bw() +
+   theme(#text = element_text(family = "Comic Sans MS", color = "#000088"),
+         axis.title = element_text(size = 16), 
+         title = element_text(size = 20),
+         legend.title = element_text(size = 10),
+         legend.text = element_text(size = 10),
+         axis.text.x = element_text(size = 12),
+         axis.text.y = element_text(size = 12),
+         plot.caption = element_text(size = 10))
+ }
+```
+
+# Data
+
+You will work with data frames in package `Lahman`. When needed, utilize R's
+help to get an understanding of what the variables are in a given data frame.
+For example, `?Salaries` will provide a short description for each of the 
+variables in data frame `Salaries`.
+
+# Questions
+
+## Question 1 
+
+Select three data frames from package `Lahman`. Identify what variables are
+in common between any pair of the three data frames, and identify what
+variables are in common between all three data frames. What are the primary
+keys for each data frame?
+
+```{r}
+
+names(Batting)
+names(Pitching)
+names(Fielding)
+```
+All 3 data frames have: playerID, yearID, stint, teamID, lgID, G 
+
+Batting and Pitching share: HBP, SF, H
+Batting and Fielding share: CS 
+Pitching and Fielding share: GS
+
+Batting primary key for the data frames is Player ID
+Pitching primary key for the data frames is Player ID
+Fielding primary key for the data frames is Player ID
+
+## Question 2 
+
+Use data frames `Managers` and `AwardsManagers` to reproduce the 
+data frame given in the html output.
+
+
+```{r}
+
+full_join(Managers, AwardsManagers) %>% 
+  filter(yearID==2016)
+ 
+```
+
+
+## Question 3
+
+Use data frames `Managers`, `AwardsManagers`, and `Master` to reproduce the 
+data frame given in the html output.
+
+
+```{r}
+mawards <- inner_join(Managers, AwardsManagers)
+full_join(mawards, Master) %>%
+select(yearID,teamID,  nameFirst, nameLast, awardID) %>%
+  filter(yearID >= 2000)
+  
+
+```
+
+
+## Question 4
+
+Use data frames `Teams` and `Salaries` to reproduce the plot given in the html output. Bar colors
+represent each team's primary color.
+
+```{r}
+  
+Winners <- Teams%>%
+  filter(WSWin == "Y")%>%
+  select("teamID", "yearID")
+
+winner.salaries <- Salaries%>%
+  semi_join(Winners, by = c("teamID", "yearID"))
+
+totals <- winner.salaries%>%
+  filter(yearID > 1999)%>%
+  group_by(teamID, yearID)%>%
+  summarise(sal = sum(salary)/1000000)%>%
+  arrange(yearID)
+
+  ggplot(totals, aes(x = factor(yearID), y = sal, fill = factor(yearID))) +
+  geom_bar(stat = "identity", position = "dodge") +
+    theme_custom() +
+  scale_x_discrete(labels = totals$teamID) +
+    coord_flip() +
+  scale_fill_manual(values = c("#0C2340", "#5F259F", "#003263", "#FF6600", "#BD3039", "#27251F", "#C41E3A", "#BD3039", "#E81828", "#0C2340", "#FD5A1E", "#C41E3A", "#FD5A1E", "#BD3039", "#FD5A1E", "#004687", "#0E3386")) +
+    geom_text(aes(label = yearID))
+```
+
+
+## Question 5
+
+Adjust your plot in Question 4 for inflation with year 2000 as baseline.
+Comment on the differences between the plots.
+
+Year | USD Value | Inflation Rate
+-----|-----------|----------------
+2000|	$1.00|	3.36%
+2001|	$1.03|	2.85%
+2002|	$1.04|	1.58%
+2003|	$1.07|	2.28%
+2004|	$1.10|	2.66%
+2005|	$1.13|	3.39%
+2006|	$1.17|	3.23%
+2007|	$1.20|	2.85%
+2008|	$1.25|	3.84%
+2009|	$1.25|	-0.36%
+2010|	$1.27|	1.64%
+2011|	$1.31|	3.16%
+2012|	$1.33|	2.07%
+2013|	$1.35|	1.46%
+2014|	$1.37|	1.62%
+2015|	$1.38|	0.12%
+2016|	$1.39|	1.26%
+
+```{r}
+usd = c(1.00, 1.03, 1.04, 1.07, 1.10, 1.13, 1.17, 1.20, 1.25, 1.25, 1.27, 1.31, 1.33, 1.35, 1.37, 1.38, 1.39)
+length(usd)
+length(Winners$sal*usd)
+n.salary = Winners$sal*usd
+
+Winners%>%
+  ggplot(mapping = aes(y = n.salary, x = as.factor(yearID), fill = teamID)) +
+  geom_bar(stat = "identity") +
+  scale_x_discrete(labels = totals$teamID) +
+  scale_fill_manual(values = c("#0C2340", "#5F259F", "#003263", "#FF6600", "#BD3039", "#27251F", "#C41E3A", "#BD3039", "#E81828", "#0C2340", "#FD5A1E", "#C41E3A", "#FD5A1E", "#BD3039", "#FD5A1E", "#004687", "#0E3386")) +
+  coord_flip() +
+  theme_custom() +
+  geom_text(aes(label = yearID), color = "white", position = position_stack(vjust = 0.9)) +
+  labs(title = "Payroll of world series winners", x = "World Series Winners", y = "Salary in millions")
+```
+
+# References {#References-link}
+
+1. Lahman, S. (2017) Lahman's Baseball Database, 1871-2016.
+
+2. RStudio Cheatsheets

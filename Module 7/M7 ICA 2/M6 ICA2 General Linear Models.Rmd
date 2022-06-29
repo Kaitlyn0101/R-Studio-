@@ -1,0 +1,294 @@
+---
+title: "Course evaluations and linear regression"
+author: "Kaitlyn Group 9"
+date: "M6 ICA2 "
+output: 
+  pdf_document
+   
+---
+
+<style type="text/css">
+/* Title */
+h1.title {
+  color: #08738a;
+  font-size:40px;
+  font-weight: bold;
+}
+/* Level 1 header */
+h1 {
+  color: #0ba2c2;
+}
+/* Level 2 header */
+h2 {
+  color: #0ba2c2;
+}
+/* Level 4 header */
+h4 {
+  font-weight: bold;
+}
+/* Table of contents */
+.list-group-item.active, .list-group-item.active:focus, .list-group-item.active:hover {
+    z-index: 2;
+    color: #fff;
+    background-color: #82D0C7;
+    border-color: #337ab7;
+}
+    
+</style>
+
+```{r setup, include=FALSE}
+# global chunk options
+knitr::opts_chunk$set(echo = TRUE,
+                      error = TRUE,
+                      message = FALSE, 
+                      warning = FALSE,
+                      comment = NA,
+                      fig.width=6, 
+                      fig.height=5)
+```
+
+# Introduction
+
+This is adapted from Lab 6 in Duke's Introduction to Data Science course.
+
+We will analyze what goes into course evaluations and how certain variables effect the overall score.
+
+To get started, load packages `tidyverse` and `broom`. Install
+any packages with code `install.packages("package_name")`.
+
+```{r packages, echo=TRUE}
+library(tidyverse)
+library(broom)
+```
+
+# Data
+
+The data were gathered from end of semester student evaluations for a large sample of professors from the University of Texas at Austin. 
+In addition, six students rated the professors' physical appearance. 
+Each row in `evals` contains a different course and the 
+columns represent variables about the courses and professors.
+
+Use `read_csv()` to read in the data and save it as an object named `evals`.
+The data is available on D2L.
+
+
+```{r data, echo=TRUE}
+evals <- read_csv("evals-mod.csv")
+```
+
+## Data dictionary
+
+**Variable** | **Description**
+-------------|---------------------------------------------------------
+score |	Average professor evaluation score: (1) very unsatisfactory - (5) excellent
+rank |	Rank of professor: teaching, tenure track, tenure
+ethnicity |	Ethnicity of professor: not minority, minority
+gender |	Gender of professor: female, male
+language |	Language of school where professor received education: english or non-english
+age |	Age of professor
+cls_perc_eval |	Percent of students in class who completed evaluation
+cls_did_eval |	Number of students in class who completed evaluation
+cls_students |	Total number of students in class
+cls_level |	Class level: lower, upper
+cls_profs |	Number of professors teaching sections in course in sample: single, multiple
+cls_credits	| Number of credits of class: one credit (lab, PE, etc.), multi credit
+bty_f1lower |	Beauty rating of professor from lower level female: (1) lowest - (10) highest
+bty_f1upper |	Beauty rating of professor from upper level female: (1) lowest - (10) highest
+bty_f2upper |	Beauty rating of professor from upper level female: (1) lowest - (10) highest
+bty_m1lower |	Beauty rating of professor from lower level male: (1) lowest - (10) highest
+bty_m1upper |	Beauty rating of professor from upper level male: (1) lowest - (10) highest
+bty_m2upper |	Beauty rating of professor from upper level male: (1) lowest - (10) highest
+
+Before you get started, add the `avg_bty` variable.
+
+```{r avg_bty-add, echo=TRUE}
+evals <- evals %>%
+  rowwise() %>% 
+  mutate(avg_bty = mean(bty_f1lower:bty_m2upper)) %>% 
+  ungroup()
+
+
+```
+
+# Part 1
+
+## Categorical predictors
+
+#### Task 1
+
+Fit a linear model with `score` as the response and `language` as a single predictor. Write out the model output.
+```{r}
+m.evals<- lm(score~factor(language), data=evals)
+m.evals
+```
+score= 4.1897- 0.2468 x language 
+
+#### Task 2
+
+What is the baseline level in Task 1? Interpret the meaning of coefficient $b_1$.
+
+The baseline level is 4.1897 represented in the equation above represents if English language was spoken. 
+#### Task 3
+
+Based on Task 1, what is the equation of the line for English speaking professors? What about non-English speaking professors?
+
+English Speaking Professor: score= 4.1897 
+Non-English Speaking Professor: score= 4.1897- 0.2468 x language 
+
+
+#### Task 4
+
+Create a scatter plot of `score` versus `rank` with `ggplot()`. Use `geom_jitter()`.
+
+```{r}
+evals %>% 
+  ggplot(mapping=aes(x=rank, y=score))+
+  geom_jitter()+
+  labs(x="Rank", y="Score")
+```
+
+#### Task 5
+
+Fit a linear model with `score` as the response and `rank` as a single predictor. What is the baseline? Write out the model output.
+
+```{r}
+m2.evals<- lm(score~factor(rank), data=evals)
+m2.evals
+```
+The baseline is 4.2843 if the rank is teaching. 
+#### Task 6
+
+Add a new variable to `evals` called `rank_new` where the baseline level is set to "tenured". *Hint*: `relevel()`
+```{r}
+evals <- evals %>%
+  mutate(rank_new = relevel(factor(rank), ref="tenured")) 
+glimpse(evals)
+  
+  
+```
+
+#### Task 7
+
+Fit a linear model with `score` as the response and `rank_new` as a single predictor. Is the baseline now different from the baseline in Task 5?
+
+```{r}
+m3.evals<- lm(score~factor(rank_new), data=evals)
+m3.evals
+```
+The baseline is slightly different than the one above. It is now 4.1391 for a tenured professor. 
+
+# Part 2
+
+## Multiple regression
+
+#### Task 8
+
+Fit a linear model with `score` as the response and `gender`, `rank`, and `avg_bty` as predictors. Write out the model. Give an interpretation for the coefficient of `avg_bty`.
+
+```{r}
+m4.evals<- lm(score~factor(rank) + factor(gender)+ avg_bty, data=evals)
+m4.evals %>% 
+tidy()
+```
+
+score= 3.96 -0.094 x rank(tenure track)- 0.16 x rank(tenured) + 0.17 x gender(male) + 0.051 x avg_bty
+
+The coefficient 0.051 represents the difference from baseline in regards to professor's beauty on any level. 
+
+#### Task 9
+
+What are the $R^2$ and adjusted $R^2$ values from your model in Task 8?
+```{r}
+m4.evals %>% 
+ glance() %>% 
+ select(r.squared, adj.r.squared)
+```
+
+
+#### Task 10
+
+Fit a linear model with `score` as the response and only `gender` and `avg_bty` as predictors. How did the $R^2$ and adjusted $R^2$ values change compared to Task 9?
+
+```{r}
+m5.evals<- lm(score~factor(gender)+ avg_bty, data=evals)
+m5.evals %>% 
+tidy()
+
+```
+```{r}
+m5.evals %>% 
+ glance() %>% 
+ select(r.squared, adj.r.squared)
+```
+The new r squared and adjusted r squared values without rank as a predictor are about .1 lower than with rank included in the predictors. 
+
+## Model Selection
+
+#### Task 11
+
+Fit a full model with `score` as the response and predictors: `rank`, `ethnicity`, `gender`, `language`, `age`, `cls_perc_eval`, `cls_students`, `cls_level`, `cls_profs`, `cls_credits`, `bty_avg`.
+```{r}
+full.model <- lm(score ~ factor(rank) + factor(ethnicity) + factor(gender) +factor(language) + age+ cls_perc_eval + cls_students + factor(cls_profs) + factor(cls_credits) + avg_bty, data = evals)
+
+step(object = full.model, direction = "backward", trace = FALSE)
+
+
+```
+
+#### Task 12
+
+Why did we not consider `cls_did_eval` and the individual beauty scores?
+
+We did not include "cls_did_eval" and the individual beauty scores because they were too highly correlated with the other predictors being used. Therefore, they were ignored. 
+
+#### Task 13
+
+Use the fitted full model in Task 11 and backward selection to determine the "best"" model. What are the $R^2$ and adjusted $R^2$ values from this "best" model?
+```{r}
+
+m.best<-full.model %>% 
+  step(object = full.model, direction = "backward", trace = FALSE)  
+m.best
+
+m.best %>% 
+  glance() %>% 
+  select(r.squared, adj.r.squared)
+```
+The r squared value for the best fit model is 0.1496 while the adjusted r squared value is 0.13653
+
+## Inference
+
+#### Task 14
+
+Create a 95% prediction interval based on new predictor values of your choosing. Use your "best" model from Task 13.
+```{r}
+new.evals <- data.frame(age = c(75))
+new.predict<-predict(m.best, new.data = new.evals, interval="prediction")
+glimpse(new.predict)
+     
+```
+
+#### Task 15
+
+Create 95% confidence intervals for the coeffients of your "best"" model from Task 13.
+
+
+```{r}
+confint(m.best)
+ 
+
+
+```
+
+
+#### Task 16
+
+Can we use this model to make valid predictions about professors from any University?
+
+Although these are factors of professors at majority of universities, the R squared values are extremely low indicating very little correlation. Therefore, I do not believe this model makes valid predictions for any university. 
+
+
+# References {#References-link}
+
+1. http://www2.stat.duke.edu/courses/Spring18/Sta199/labs/lab-06-modelling-course-evals.html
+
